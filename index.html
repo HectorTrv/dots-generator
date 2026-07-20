@@ -418,6 +418,41 @@
   }
   /* mode params card hérite du même layout 2 colonnes */
 
+  /* ── Grilles d'options (remplacent les menus déroulants) ── */
+  .opt-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+  .opt-grid button {
+    grid-column: span 6;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 4px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: color .15s var(--ease-out), background .15s var(--ease-out), border-color .15s var(--ease-out);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .opt-grid button:not(.active):hover { border-color: var(--border-hover); color: var(--text); }
+  .opt-grid button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #101014;
+    font-weight: 700;
+  }
+  /* Fondu : 3 pilules puis 4 */
+  #fadeMode button:nth-child(-n+3) { grid-column: span 4; }
+  #fadeMode button:nth-child(n+4) { grid-column: span 3; }
+  /* Répartition : Aléatoire pleine largeur, puis 2×2 */
+  #colorDist button:first-child { grid-column: span 12; }
+
   /* ── Presets pills ── */
   .presets {
     display: grid;
@@ -1105,13 +1140,13 @@
             <span class="val" id="waveAmpVal">75</span>
           </div>
           <div class="row-wide" data-modes="wave">
-            <label for="waveDir">Direction</label>
-            <select id="waveDir">
-              <option value="horizontal" selected>Horizontale</option>
-              <option value="vertical">Verticale</option>
-              <option value="diagonal">Diagonale</option>
-              <option value="radial">Radiale</option>
-            </select>
+            <label id="waveDirLabel">Direction</label>
+            <div class="opt-grid" id="waveDir" role="group" aria-labelledby="waveDirLabel">
+              <button type="button" data-value="horizontal">Horizontale</button>
+              <button type="button" data-value="vertical">Verticale</button>
+              <button type="button" data-value="diagonal">Diagonale</button>
+              <button type="button" data-value="radial">Radiale</button>
+            </div>
           </div>
         </div>
       </div>
@@ -1175,16 +1210,16 @@
           <span class="val" id="clusteringVal">40</span>
         </div>
         <div class="row-wide">
-          <label for="fadeMode">Fondu</label>
-          <select id="fadeMode">
-            <option value="none">Aucun</option>
-            <option value="edges" selected>Bords</option>
-            <option value="center">Centre</option>
-            <option value="top">Haut</option>
-            <option value="bottom">Bas</option>
-            <option value="left">Gauche</option>
-            <option value="right">Droite</option>
-          </select>
+          <label id="fadeModeLabel">Fondu</label>
+          <div class="opt-grid" id="fadeMode" role="group" aria-labelledby="fadeModeLabel">
+            <button type="button" data-value="none">Aucun</button>
+            <button type="button" data-value="edges">Bords</button>
+            <button type="button" data-value="center">Centre</button>
+            <button type="button" data-value="top">Haut</button>
+            <button type="button" data-value="bottom">Bas</button>
+            <button type="button" data-value="left">Gauche</button>
+            <button type="button" data-value="right">Droite</button>
+          </div>
         </div>
         <div class="row">
           <label for="fadeStrength">Intensité</label>
@@ -1209,14 +1244,14 @@
           <button class="swatch-add" id="addColor" title="Ajouter une couleur" aria-label="Ajouter une couleur">+</button>
         </div>
         <div class="row-wide">
-          <label for="colorDist">Répartition</label>
-          <select id="colorDist">
-            <option value="random" selected>Aléatoire</option>
-            <option value="horizontal">→ Horizontal</option>
-            <option value="vertical">↓ Vertical</option>
-            <option value="radial">◎ Radial</option>
-            <option value="depth">⊙ Profondeur</option>
-          </select>
+          <label id="colorDistLabel">Répartition</label>
+          <div class="opt-grid" id="colorDist" role="group" aria-labelledby="colorDistLabel">
+            <button type="button" data-value="random">Aléatoire</button>
+            <button type="button" data-value="horizontal">→ Horizontal</button>
+            <button type="button" data-value="vertical">↓ Vertical</button>
+            <button type="button" data-value="radial">◎ Radial</button>
+            <button type="button" data-value="depth">⊙ Profondeur</button>
+          </div>
         </div>
         <div class="row">
           <label for="grayMix">Gris neutres</label>
@@ -1820,9 +1855,27 @@ document.getElementById("shapeSeg").addEventListener("click", e=>{
   render();
 });
 
-document.getElementById("fadeMode").addEventListener("change", e=>{ state.fadeMode=e.target.value; render(); });
-document.getElementById("waveDir").addEventListener("change", e=>{ state.waveDir=e.target.value; render(); });
-document.getElementById("colorDist").addEventListener("change", e=>{ state.colorDist=e.target.value; render(); });
+/* ── Grilles d'options : sélection à un clic, tout est visible ── */
+const optGrids={};
+function initOptGrid(id, cle) {
+  const grille=document.getElementById(id);
+  const boutons=[...grille.querySelectorAll("button")];
+  function appliquer(v, rendre=true) {
+    state[cle]=v;
+    boutons.forEach(b=>{
+      const actif=b.dataset.value===v;
+      b.classList.toggle("active",actif);
+      b.setAttribute("aria-pressed",actif?"true":"false");
+    });
+    if(rendre) render();
+  }
+  grille.addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) appliquer(b.dataset.value); });
+  optGrids[id]=appliquer;
+  appliquer(state[cle], false);
+}
+initOptGrid("fadeMode","fadeMode");
+initOptGrid("waveDir","waveDir");
+initOptGrid("colorDist","colorDist");
 document.getElementById("bgColor").addEventListener("click", e=>{
   const b=e.currentTarget;
   picker.ouvrir(b, state.bgColor, hx=>{
@@ -2040,7 +2093,10 @@ function randomPalette() {
   return palette;
 }
 function setSlider(id,v) { const el=document.getElementById(id); el.value=v; el.dispatchEvent(new Event("input")); }
-function setSelect(id,v) { const el=document.getElementById(id); el.value=v; el.dispatchEvent(new Event("change")); }
+function setSelect(id,v) {
+  if(optGrids[id]) { optGrids[id](v); return; }
+  const el=document.getElementById(id); el.value=v; el.dispatchEvent(new Event("change"));
+}
 
 /* ── Préréglages par disposition : chaque mode démarre avec un rendu soigné ── */
 const MODE_PRESETS = {
