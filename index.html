@@ -358,6 +358,10 @@
     position: relative;
     z-index: 1;
     flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     background: none;
     border: none;
     color: var(--text-dim);
@@ -367,6 +371,7 @@
     transition: color .2s var(--ease-out);
     font-weight: 500;
   }
+  .seg button svg { flex-shrink: 0; }
   .seg button.active {
     color: #101014;
     font-weight: 700;
@@ -588,6 +593,93 @@
   }
   .swatch-add:hover:not(:disabled) { border-color: var(--accent-dim); color: var(--accent); }
   .swatch-add:disabled { opacity: .35; cursor: not-allowed; }
+
+  /* ── Zone d'import d'image ── */
+  .img-zone {
+    width: 100%;
+    border: 1.5px dashed var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color .15s var(--ease-out), background .15s var(--ease-out);
+  }
+  .img-zone:hover, .img-zone.survol, .img-zone:focus-visible {
+    border-color: var(--accent-dim);
+    background: var(--accent-glow);
+  }
+  .img-vide {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    padding: 16px 10px;
+    color: var(--text-dim);
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.5;
+  }
+  .img-vide em { font-style: normal; opacity: .65; }
+  .img-apercu {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    padding-right: 30px;
+  }
+  .img-apercu img {
+    width: 52px; height: 40px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .img-infos {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .img-nom {
+    font-size: 11.5px;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .img-remplacer { font-size: 10px; color: var(--text-dim); }
+  .img-suppr {
+    position: absolute;
+    top: 6px; right: 6px;
+    width: 18px; height: 18px;
+    border-radius: 5px;
+    background: var(--panel-3);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 11px;
+    line-height: 1;
+    cursor: pointer;
+    transition: color .12s, border-color .12s;
+  }
+  .img-suppr:hover { color: var(--text); border-color: var(--border-hover); }
+  /* Dépôt d'image directement sur la scène */
+  .stage.survol-drop { position: relative; }
+  .stage.survol-drop::after {
+    content: "Déposer l'image ici";
+    position: absolute;
+    inset: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed var(--accent-dim);
+    border-radius: 14px;
+    background: rgba(16,16,20,.55);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 600;
+    pointer-events: none;
+    z-index: 50;
+  }
 
   /* ── Pastille couleur du fond ── */
   .mini-swatch {
@@ -1169,10 +1261,20 @@
           </div>
           <div class="row-wide" data-modes="image">
             <label id="imageBtnLabel">Image source</label>
-            <button type="button" class="dd-trigger" id="imagePick" aria-labelledby="imageBtnLabel">
-              <span class="dd-value" id="imageName">Choisir une image…</span>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" stroke-width="1.5"/><path d="M5 21C9.37246 15.775 14.2741 8.88406 21.4975 13.5424" stroke="currentColor" stroke-width="1.5"/></svg>
-            </button>
+            <div class="img-zone" id="imageZone" role="button" tabindex="0" aria-labelledby="imageBtnLabel">
+              <div class="img-vide" id="imageVide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.5 3C7.02166 3 4.78249 3 3.39124 4.39124C2 5.78249 2 8.02166 2 12.5C2 16.9783 2 19.2175 3.39124 20.6088C4.78249 22 7.02166 22 11.5 22C15.9783 22 18.2175 22 19.6088 20.6088C21 19.2175 21 16.9783 21 12.5C21 11.7811 21 11.1201 20.9942 10.5" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><path d="M2 14.1354C2.61902 14.0455 3.24484 14.0011 3.87171 14.0027C6.52365 13.9466 9.11064 14.7729 11.1711 16.3342C13.082 17.7821 14.4247 19.7749 15 22" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><path d="M21 16.8962C19.8246 16.3009 18.6088 15.9988 17.3862 16.0001C15.5345 15.9928 13.7015 16.6733 12 18" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><path d="M17 4.5C17.4915 3.9943 18.7998 2 19.5 2M22 4.5C21.5085 3.9943 20.2002 2 19.5 2M19.5 2V10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+                <span>Glisser une image ici<br><em>ou cliquer pour parcourir</em></span>
+              </div>
+              <div class="img-apercu hidden" id="imageApercu">
+                <img id="imageThumb" alt="Aperçu de l'image importée">
+                <div class="img-infos">
+                  <span class="img-nom" id="imageName"></span>
+                  <span class="img-remplacer">Cliquer pour remplacer</span>
+                </div>
+                <button type="button" class="img-suppr" id="imageClear" aria-label="Retirer l'image">×</button>
+              </div>
+            </div>
             <input type="file" id="imageInput" accept="image/*" hidden>
           </div>
           <div class="row" data-modes="image">
@@ -1217,9 +1319,9 @@
         <div class="row-wide">
           <label>Forme</label>
           <div class="seg" id="shapeSeg">
-            <button data-shape="square" class="active">Carré</button>
-            <button data-shape="rounded">Arrondi</button>
-            <button data-shape="circle">Cercle</button>
+            <button data-shape="square" class="active"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" fill="currentColor"/></svg>Carré</button>
+            <button data-shape="rounded"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><rect x="1" y="1" width="10" height="10" rx="3.4" fill="currentColor"/></svg>Arrondi</button>
+            <button data-shape="circle"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>Cercle</button>
           </div>
         </div>
         <div class="row" data-modes="grid disc ring wave persp ripple vortex topo image">
@@ -1716,6 +1818,8 @@ function chargerImage(fichier) {
     ctx.drawImage(img,0,0,c.width,c.height);
     imageEchantillon={ pixels: ctx.getImageData(0,0,c.width,c.height).data, w: c.width, h: c.height };
     document.getElementById("imageName").textContent=fichier.name;
+    document.getElementById("imageThumb").src=c.toDataURL();
+    majZoneImage();
     URL.revokeObjectURL(url);
     render();
   };
@@ -1969,10 +2073,6 @@ document.getElementById("modeGrid").addEventListener("click", e=>{
   document.querySelectorAll("#modeGrid button").forEach(b=>{ b.classList.remove("active"); b.setAttribute("aria-pressed","false"); });
   btn.classList.add("active"); btn.setAttribute("aria-pressed","true"); state.mode=btn.dataset.mode;
   applyModePreset(state.mode);
-  if(state.mode==="image" && !imageEchantillon) {
-    showToast("Choisissez une image");
-    document.getElementById("imageInput").click();
-  }
   animerScene();
   updateVisibility(); render();
 });
@@ -2063,12 +2163,45 @@ document.getElementById("bgColor").addEventListener("click", e=>{
 });
 document.getElementById("bgTransparent").addEventListener("change", e=>{ state.bgTransparent=e.target.checked; render(); });
 document.getElementById("imgInvert").addEventListener("change", e=>{ state.imgInvert=e.target.checked; render(); });
-document.getElementById("imagePick").addEventListener("click", ()=>document.getElementById("imageInput").click());
+const zoneImage=document.getElementById("imageZone");
+function majZoneImage() {
+  const charge=!!imageEchantillon;
+  document.getElementById("imageVide").classList.toggle("hidden", charge);
+  document.getElementById("imageApercu").classList.toggle("hidden", !charge);
+}
+zoneImage.addEventListener("click", e=>{
+  if(e.target.closest("#imageClear")) return;
+  document.getElementById("imageInput").click();
+});
+zoneImage.addEventListener("keydown", e=>{
+  if(e.key==="Enter"||e.key===" ") { e.preventDefault(); document.getElementById("imageInput").click(); }
+});
+document.getElementById("imageClear").addEventListener("click", ()=>{
+  imageEchantillon=null;
+  majZoneImage(); render();
+});
 document.getElementById("imageInput").addEventListener("change", e=>{
   const f=e.target.files[0];
   if(f) chargerImage(f);
   e.target.value="";
 });
+// Glisser-déposer : sur la zone et directement sur la scène
+function brancherDepot(cible, surClasse) {
+  cible.addEventListener("dragover", e=>{ e.preventDefault(); cible.classList.add(surClasse); });
+  cible.addEventListener("dragleave", e=>{ if(!cible.contains(e.relatedTarget)) cible.classList.remove(surClasse); });
+  cible.addEventListener("drop", e=>{
+    e.preventDefault();
+    cible.classList.remove(surClasse);
+    const f=[...e.dataTransfer.files].find(x=>x.type.startsWith("image/"));
+    if(!f) return;
+    chargerImage(f);
+    if(state.mode!=="image") document.querySelector('#modeGrid button[data-mode="image"]').click();
+  });
+}
+brancherDepot(zoneImage, "survol");
+brancherDepot(document.querySelector(".stage"), "survol-drop");
+document.addEventListener("dragover", e=>e.preventDefault());
+document.addEventListener("drop", e=>e.preventDefault());
 document.getElementById("showGrid").addEventListener("change", e=>{ state.showGrid=e.target.checked; render(); });
 
 /* Seed */
