@@ -15,9 +15,9 @@
     --text: #e8e8ed;
     --text-dim: #72728a;
     --text-mid: #a8a8bb;
-    --accent: #8ce03c;
-    --accent-dim: #6fb52f;
-    --accent-glow: rgba(140,224,60,.12);
+    --accent: #f2f2f5;
+    --accent-dim: #c9c9d4;
+    --accent-glow: rgba(242,242,245,.08);
     --slider-fill: #2d2d37;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -353,7 +353,7 @@
   }
   .seg button.active {
     background: var(--accent);
-    color: #0a1200;
+    color: #101014;
     font-weight: 700;
   }
   .seg button:not(.active):hover { color: var(--text); }
@@ -665,7 +665,7 @@
     transition: transform .15s, background .15s;
   }
   .toggle input:checked ~ .toggle-track { background: var(--accent); border-color: var(--accent); }
-  .toggle input:checked ~ .toggle-track::after { transform: translateX(13px); background: #0a1200; }
+  .toggle input:checked ~ .toggle-track::after { transform: translateX(13px); background: #101014; }
 
   /* ── Export footer ── */
   .sidebar-footer {
@@ -696,7 +696,7 @@
   .btn-export-png {
     height: 30px;
     background: var(--accent);
-    color: #0a1200;
+    color: #101014;
     border: none;
     border-radius: 7px;
     padding: 0 14px;
@@ -709,7 +709,7 @@
     transition: background .12s;
     white-space: nowrap;
   }
-  .btn-export-png:hover { background: #a4f04a; }
+  .btn-export-png:hover { background: #dcdce2; }
   .export-secondary { display: flex; gap: 6px; }
   .btn-ghost {
     flex: 1;
@@ -733,7 +733,7 @@
   .btn-randomize-full {
     width: 100%;
     background: var(--accent);
-    color: #0a1200;
+    color: #101014;
     border: none;
     border-radius: 8px;
     padding: 10px;
@@ -742,7 +742,7 @@
     cursor: pointer;
     transition: background .12s;
   }
-  .btn-randomize-full:hover { background: #a4f04a; }
+  .btn-randomize-full:hover { background: #dcdce2; }
   .btn-reseed-full {
     width: 100%;
     background: var(--panel-3);
@@ -764,7 +764,7 @@
   .btn-export-main {
     height: 30px;
     background: var(--accent);
-    color: #0a1200;
+    color: #101014;
     border: none;
     border-radius: 7px;
     padding: 0 12px;
@@ -777,7 +777,7 @@
     transition: background .12s;
     white-space: nowrap;
   }
-  .btn-export-main:hover { background: #a4f04a; }
+  .btn-export-main:hover { background: #dcdce2; }
   .btn-export-main .chevron { transition: transform .15s; }
   .export-wrap.open .btn-export-main .chevron { transform: rotate(180deg); }
   .export-dropdown {
@@ -924,7 +924,7 @@
     left: 50%;
     transform: translateX(-50%) translateY(60px);
     background: var(--accent);
-    color: #0a1200;
+    color: #101014;
     font-size: 12.5px;
     font-weight: 700;
     padding: 9px 16px;
@@ -1266,9 +1266,9 @@
     <div class="spacer"></div>
     <div class="export-wrap" id="exportWrap">
       <button class="btn-export-main" id="exportTrigger" aria-haspopup="true" aria-expanded="false">
-        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6l3.5 3.5L10 6" stroke="#0a1200" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11h11" stroke="#0a1200" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <svg width="12" height="12" viewBox="0 0 13 13" fill="none"><path d="M6.5 1v8M3 6l3.5 3.5L10 6" stroke="#101014" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M1 11h11" stroke="#101014" stroke-width="1.6" stroke-linecap="round"/></svg>
         Exporter
-        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="#0a1200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="chevron" width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 3.5L5 6.5L8 3.5" stroke="#101014" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
       <div class="export-dropdown" id="exportDropdown">
         <div class="export-group-label">PNG</div>
