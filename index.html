@@ -1089,6 +1089,10 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M16 20H2L5.22457 10.7557C6.79555 6.25189 7.58104 4 9 4C10.3373 4 11.1119 6 12.5116 10" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"/><path d="M6 20H22L17.4066 12.6585C15.8806 10.2195 15.1176 9 14 9C12.8824 9 12.1194 10.2195 10.5934 12.6585L9.12837 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
             Topo.
           </button>
+          <button data-mode="image" title="Importer une image — les points suivent sa luminosité">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.5085 2.9903C7.02567 2.9903 4.78428 2.9903 3.39164 4.38238C1.99902 5.77447 1.99902 8.015 1.99902 12.4961C1.99902 16.9771 1.99902 19.2176 3.39164 20.6098C4.78428 22.0018 7.02567 22.0018 11.5085 22.0018C15.9912 22.0018 18.2326 22.0018 19.6253 20.6098C21.0179 19.2176 21.0179 16.9771 21.0179 12.4961V11.9958" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><path d="M4.99902 20.9898C9.209 16.2385 13.9402 9.93727 20.999 14.6632" stroke="currentColor" stroke-width="1.5"/><path d="M17.9958 1.99829V10.0064M22.0014 5.97728L13.9902 5.99217" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+            Image
+          </button>
         </div>
 
         <!-- Paramètres contextuels du mode sélectionné -->
@@ -1163,6 +1167,26 @@
             <input type="range" id="waveAmp" min="0" max="100" value="75">
             <span class="val" id="waveAmpVal">75</span>
           </div>
+          <div class="row-wide" data-modes="image">
+            <label id="imageBtnLabel">Image source</label>
+            <button type="button" class="dd-trigger" id="imagePick" aria-labelledby="imageBtnLabel">
+              <span class="dd-value" id="imageName">Choisir une image…</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="1.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z" stroke="currentColor" stroke-width="1.5"/><path d="M5 21C9.37246 15.775 14.2741 8.88406 21.4975 13.5424" stroke="currentColor" stroke-width="1.5"/></svg>
+            </button>
+            <input type="file" id="imageInput" accept="image/*" hidden>
+          </div>
+          <div class="row" data-modes="image">
+            <label for="imgContrast">Contraste</label>
+            <input type="range" id="imgContrast" min="0" max="100" value="50">
+            <span class="val" id="imgContrastVal">50</span>
+          </div>
+          <div class="row-wide" data-modes="image">
+            <label for="imgInvert">Inverser</label>
+            <label class="toggle">
+              <input type="checkbox" id="imgInvert">
+              <span class="toggle-track"></span>
+            </label>
+          </div>
           <div class="row-wide" data-modes="wave">
             <label id="waveDirLabel">Direction</label>
             <div class="dd" id="waveDir">
@@ -1198,12 +1222,12 @@
             <button data-shape="circle">Cercle</button>
           </div>
         </div>
-        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo">
+        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo image">
           <label for="cellSize">Espacement</label>
           <input type="range" id="cellSize" min="6" max="60" value="14">
           <span class="val" id="cellSizeVal">14</span>
         </div>
-        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo">
+        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo image">
           <label for="dotScale">Taille du point</label>
           <input type="range" id="dotScale" min="10" max="100" value="55">
           <span class="val" id="dotScaleVal">55</span>
@@ -1222,7 +1246,7 @@
     </details>
 
     <!-- ── Densité ── -->
-    <details class="group" data-modes="grid disc ring wave persp ripple vortex topo">
+    <details class="group" data-modes="grid disc ring wave persp ripple vortex topo image">
       <summary>
         <span class="s-dot"></span>
         Densité
@@ -1429,6 +1453,7 @@ const state = {
   waveFreq: 5, waveAmp: 75, waveDir: "horizontal",
   colors: ["#7ed321","#4caf50","#2e7d32","#9ccc65","#5a8f29"],
   colorDist: "random", grayMix: 35, opacityVar: 55,
+  imgContrast: 50, imgInvert: false,
   bgColor: "#f4f5f4", bgTransparent: false, showGrid: true, gridOpacity: 6,
   seed: Math.floor(Math.random() * 1000000),
 };
@@ -1676,6 +1701,64 @@ function perspDots(rng, ghost) {
   return dots;
 }
 
+/* ── Image importée : trame pilotée par la luminosité ── */
+let imageEchantillon=null;
+
+function chargerImage(fichier) {
+  const url=URL.createObjectURL(fichier);
+  const img=new Image();
+  img.onload=()=>{
+    const c=document.createElement("canvas");
+    const max=384, k=Math.min(1, max/Math.max(img.width,img.height));
+    c.width=Math.max(1,Math.round(img.width*k));
+    c.height=Math.max(1,Math.round(img.height*k));
+    const ctx=c.getContext("2d");
+    ctx.drawImage(img,0,0,c.width,c.height);
+    imageEchantillon={ pixels: ctx.getImageData(0,0,c.width,c.height).data, w: c.width, h: c.height };
+    document.getElementById("imageName").textContent=fichier.name;
+    URL.revokeObjectURL(url);
+    render();
+  };
+  img.onerror=()=>{ URL.revokeObjectURL(url); showToast("Image illisible"); };
+  img.src=url;
+}
+
+function luminanceImage(nx, ny) {
+  // ajustement « cover » : l'image remplit le canevas, recadrée au centre
+  const s=state, im=imageEchantillon;
+  const k=Math.max(s.width/im.w, s.height/im.h);
+  const px=Math.min(im.w-1, Math.max(0, Math.round((nx*s.width+(im.w*k-s.width)/2)/k)));
+  const py=Math.min(im.h-1, Math.max(0, Math.round((ny*s.height+(im.h*k-s.height)/2)/k)));
+  const i=(py*im.w+px)*4, d=im.pixels, a=d[i+3]/255;
+  const r=d[i]*a+255*(1-a), g=d[i+1]*a+255*(1-a), b=d[i+2]*a+255*(1-a);
+  return (0.2126*r+0.7152*g+0.0722*b)/255;
+}
+
+function imageDots(rng, ghost) {
+  const s=state, cell=s.cellSize;
+  const dots=[];
+  if(!imageEchantillon) return dots;
+  const cols=Math.ceil(s.width/cell), rows=Math.ceil(s.height/cell);
+  const density=s.density/100, fadeStrength=s.fadeStrength/100;
+  const sizeVar=s.sizeVar/100, opacityVar=s.opacityVar/100, baseDot=cell*(s.dotScale/100);
+  const contraste=0.5+(s.imgContrast/100)*2;
+  for (let gy=0; gy<rows; gy++) {
+    for (let gx=0; gx<cols; gx++) {
+      const cx=gx*cell+cell/2, cy=gy*cell+cell/2;
+      const nx=cx/s.width, ny=cy/s.height;
+      if (ghost) { dots.push({ x:cx, y:cy, size:baseDot }); continue; }
+      const r1=rng(), r2=rng();
+      let lum=luminanceImage(nx,ny);
+      if(s.imgInvert) lum=1-lum;
+      let sombre=Math.max(0,Math.min(1,(1-lum-0.5)*contraste+0.5));
+      const local=density*sombre*fadeFactor(nx,ny,s.fadeMode,fadeStrength)*1.6;
+      if(r1>=local) continue;
+      dots.push({ x:cx, y:cy, size:baseDot*(0.35+0.65*sombre)*(1-sizeVar*rng()), color:pickColor(rng,colorT(nx,ny,sombre)), opacity:1-opacityVar*r2 });
+    }
+  }
+  return dots;
+}
+
 function generateDotList(rng, ghost) {
   switch(state.mode) {
     case "disc":   return gridDots(rng, discMask(), null);
@@ -1687,6 +1770,7 @@ function generateDotList(rng, ghost) {
     case "spiral": return spiralDots(rng, ghost);
     case "sphere": return sphereDots(rng, ghost);
     case "persp":  return perspDots(rng, ghost);
+    case "image":  return imageDots(rng, ghost);
     default:       return gridDots(rng, null, null);
   }
 }
@@ -1834,6 +1918,7 @@ bindSlider("backFade","backFade");
 bindSlider("horizon","horizon");
 bindSlider("perspStrength","perspStrength");
 bindSlider("waveFreq","waveFreq");
+bindSlider("imgContrast","imgContrast");
 bindSlider("waveAmp","waveAmp");
 
 document.getElementById("canvasW").addEventListener("input", e=>{
@@ -1884,6 +1969,10 @@ document.getElementById("modeGrid").addEventListener("click", e=>{
   document.querySelectorAll("#modeGrid button").forEach(b=>{ b.classList.remove("active"); b.setAttribute("aria-pressed","false"); });
   btn.classList.add("active"); btn.setAttribute("aria-pressed","true"); state.mode=btn.dataset.mode;
   applyModePreset(state.mode);
+  if(state.mode==="image" && !imageEchantillon) {
+    showToast("Choisissez une image");
+    document.getElementById("imageInput").click();
+  }
   animerScene();
   updateVisibility(); render();
 });
@@ -1973,6 +2062,13 @@ document.getElementById("bgColor").addEventListener("click", e=>{
   });
 });
 document.getElementById("bgTransparent").addEventListener("change", e=>{ state.bgTransparent=e.target.checked; render(); });
+document.getElementById("imgInvert").addEventListener("change", e=>{ state.imgInvert=e.target.checked; render(); });
+document.getElementById("imagePick").addEventListener("click", ()=>document.getElementById("imageInput").click());
+document.getElementById("imageInput").addEventListener("change", e=>{
+  const f=e.target.files[0];
+  if(f) chargerImage(f);
+  e.target.value="";
+});
 document.getElementById("showGrid").addEventListener("change", e=>{ state.showGrid=e.target.checked; render(); });
 
 /* Seed */
@@ -2197,6 +2293,7 @@ const MODE_PRESETS = {
   ripple: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:7, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
   vortex: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:8, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
   topo:   { sliders:{ cellSize:12, dotScale:60, sizeVar:25, density:65, clustering:0, waveFreq:6, waveAmp:95 }, selects:{ fadeMode:"none" } },
+  image:  { sliders:{ cellSize:10, dotScale:72, sizeVar:15, density:80, fadeStrength:0 }, selects:{ fadeMode:"none" } },
 };
 function applyModePreset(mode) {
   const p=MODE_PRESETS[mode]; if(!p) return;
@@ -2208,7 +2305,9 @@ const BG_CHOICES=["#f4f5f4","#ffffff","#f7f3ec","#eef1f6","#f2ecf5","#101418","#
 function randomizeAll() {
   animerScene();
   const R=(min,max)=>Math.round(min+Math.random()*(max-min)), pick=arr=>arr[Math.floor(Math.random()*arr.length)];
-  document.querySelector(`#modeGrid button[data-mode="${pick(["grid","disc","ring","spiral","sphere","persp","wave","ripple","vortex","topo"])}"]`).click();
+  const modesDispo=["grid","disc","ring","spiral","sphere","persp","wave","ripple","vortex","topo"];
+  if(imageEchantillon) modesDispo.push("image");
+  document.querySelector(`#modeGrid button[data-mode="${pick(modesDispo)}"]`).click();
   document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","circle"])}"]`).click();
   setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("dotSizePx",R(5,14)); setSlider("sizeVar",R(10,55));
   setSlider("density",R(25,70)); setSlider("clustering",R(10,70));
