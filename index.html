@@ -444,10 +444,27 @@
     background: var(--panel-2);
     border: 1px solid var(--border);
     border-radius: 9px;
-    padding: 4px 10px 8px;
+    padding: 12px;
     margin: 2px 0 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-  /* mode params card hérite du même layout 2 colonnes */
+
+  /* Ligne bascule : libellé à gauche, interrupteur à droite */
+  .row-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .row-toggle > label:first-child {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
 
   /* ── Menus déroulants sur mesure ── */
   .dd { position: relative; width: 100%; }
@@ -640,8 +657,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
-    padding: 16px 10px;
+    gap: 9px;
+    padding: 22px 12px;
     color: var(--text-dim);
     font-size: 11px;
     text-align: center;
@@ -1344,7 +1361,7 @@
             <input type="range" id="imgContrast" min="0" max="100" value="50">
             <span class="val" id="imgContrastVal">50</span>
           </div>
-          <div class="row-wide" data-modes="image">
+          <div class="row-toggle" data-modes="image">
             <label for="imgInvert">Inverser</label>
             <label class="toggle">
               <input type="checkbox" id="imgInvert">
@@ -1512,14 +1529,14 @@
           <label for="bgColor">Couleur</label>
           <button class="mini-swatch" id="bgColor" type="button" aria-label="Couleur du fond : #f4f5f4 — modifier" style="background:#f4f5f4"></button>
         </div>
-        <div class="row-wide">
+        <div class="row-toggle">
           <label for="bgTransparent">Transparent</label>
           <label class="toggle">
             <input type="checkbox" id="bgTransparent">
             <span class="toggle-track"></span>
           </label>
         </div>
-        <div class="row-wide">
+        <div class="row-toggle">
           <label for="showGrid">Grille subtile</label>
           <label class="toggle">
             <input type="checkbox" id="showGrid" checked>
