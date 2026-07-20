@@ -1363,7 +1363,7 @@ function ringMask() {
   return (px,py) => { const dd=Math.abs(Math.hypot(px-cx,py-cy)-ringCenter); if(dd>=bandHalf) return 0; if(dd<=bandHalf-soft) return 1; return (bandHalf-dd)/soft; };
 }
 
-function spiralDots(rng) {
+function spiralDots(rng, ghost) {
   const s=state, cx=s.width/2, cy=s.height/2;
   const golden=Math.PI*(3-Math.sqrt(5)), rMax=Math.hypot(s.width,s.height)/2;
   const sizeVar=s.sizeVar/100, opacityVar=s.opacityVar/100, decay=s.spiralDecay/100;
@@ -1373,12 +1373,14 @@ function spiralDots(rng) {
     const th=i*golden, x=cx+r*Math.cos(th), y=cy+r*Math.sin(th);
     if(x<-20||x>s.width+20||y<-20||y>s.height+20) continue;
     const tr=Math.min(1,r/(Math.min(s.width,s.height)/2));
-    dots.push({ x, y, size:s.dotSizePx*Math.max(.05,1-decay*tr)*(1-sizeVar*rng()), color:pickColor(rng,colorT(x/s.width,y/s.height,tr)), opacity:1-opacityVar*rng() });
+    const base=s.dotSizePx*Math.max(.05,1-decay*tr);
+    if (ghost) { dots.push({ x, y, size:base }); continue; }
+    dots.push({ x, y, size:base*(1-sizeVar*rng()), color:pickColor(rng,colorT(x/s.width,y/s.height,tr)), opacity:1-opacityVar*rng() });
   }
   return dots;
 }
 
-function sphereDots(rng) {
+function sphereDots(rng, ghost) {
   const s=state, cx=s.width/2, cy=s.height/2;
   const R=(s.radiusPct/100)*Math.min(s.width,s.height)/2;
   const rx=(s.rotX*Math.PI)/180, ry=(s.rotY*Math.PI)/180;
@@ -1393,6 +1395,7 @@ function sphereDots(rng) {
     let x2=px*cosY+z1*sinY, z2=-px*sinY+z1*cosY;
     const sc=f/(f+z2), sx=cx+x2*R*sc, sy=cy+y1*R*sc;
     const depth=(z2+1)/2, fade=1-backFade*depth;
+    if (ghost) { dots.push({ x:sx, y:sy, z:z2, size:s.dotSizePx*sc }); continue; }
     if(fade<=.02) continue;
     dots.push({ x:sx, y:sy, z:z2, size:s.dotSizePx*sc*(1-sizeVar*rng()), color:pickColor(rng,colorT(sx/s.width,sy/s.height,depth)), opacity:(1-opacityVar*rng())*fade });
   }
@@ -1400,7 +1403,7 @@ function sphereDots(rng) {
   return dots;
 }
 
-function perspDots(rng) {
+function perspDots(rng, ghost) {
   const s=state, cx=s.width/2;
   const horizonY=(s.horizon/100)*s.height, span=s.height-horizonY;
   const baseK=s.cellSize/Math.max(1,span-s.cellSize);
@@ -1413,8 +1416,16 @@ function perspDots(rng) {
     const sc=1/(1+(i-1)*k), y=horizonY+(s.height-horizonY)*sc;
     if(prevY-y<1.2) break; prevY=y;
     const cellW=s.cellSize*sc; if(cellW<1.5) break;
+    // Trame fantôme : on s'arrête avant l'horizon (illisible et très coûteux en dessous)
+    if(ghost && sc<0.4) break;
     const cols=Math.ceil(s.width/cellW)+2, depth=1-sc;
     for (let c=0; c<cols; c++) {
+      if (ghost) {
+        const gx=cx+(c-cols/2)*cellW;
+        if(gx<-cellW||gx>s.width+cellW) continue;
+        dots.push({ x:gx, y, size:baseDot*sc });
+        continue;
+      }
       const r1=rng(), r2=rng();
       const x=cx+(c-cols/2)*cellW;
       if(x<-cellW||x>s.width+cellW) continue;
@@ -1427,7 +1438,7 @@ function perspDots(rng) {
   return dots;
 }
 
-function generateDotList(rng) {
+function generateDotList(rng, ghost) {
   switch(state.mode) {
     case "disc":   return gridDots(rng, discMask(), null);
     case "ring":   return gridDots(rng, ringMask(), null);
@@ -1435,27 +1446,46 @@ function generateDotList(rng) {
     case "ripple": return gridDots(rng, null, makeField("ripple"));
     case "vortex": return gridDots(rng, null, makeField("vortex"));
     case "topo":   return gridDots(rng, null, makeField("topo"));
-    case "spiral": return spiralDots(rng);
-    case "sphere": return sphereDots(rng);
-    case "persp":  return perspDots(rng);
+    case "spiral": return spiralDots(rng, ghost);
+    case "sphere": return sphereDots(rng, ghost);
+    case "persp":  return perspDots(rng, ghost);
     default:       return gridDots(rng, null, null);
   }
 }
 
 /* ── SVG ── */
+function svgDot(d, fill, o) {
+  if(state.shape==="circle") return `<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${(d.size/2).toFixed(2)}" fill="${fill}"${o}/>`;
+  const rx=state.shape==="rounded"?` rx="${(d.size*.25).toFixed(2)}"`:``;
+  return `<rect x="${(d.x-d.size/2).toFixed(1)}" y="${(d.y-d.size/2).toFixed(1)}" width="${d.size.toFixed(2)}" height="${d.size.toFixed(2)}"${rx} fill="${fill}"${o}/>`;
+}
 function generateSVG() {
   const s=state, rng=mulberry32(s.seed), parts=[];
   parts.push(`<svg xmlns="http://www.w3.org/2000/svg" width="${s.width}" height="${s.height}" viewBox="0 0 ${s.width} ${s.height}">`);
   if(!s.bgTransparent) parts.push(`<rect width="${s.width}" height="${s.height}" fill="${s.bgColor}"/>`);
   if(s.showGrid) {
-    const cell=s.cellSize, gs=(cell*(s.dotScale/100)).toFixed(2), off=((cell-cell*(s.dotScale/100))/2).toFixed(2);
-    parts.push(`<defs><pattern id="sg" width="${cell}" height="${cell}" patternUnits="userSpaceOnUse"><rect x="${off}" y="${off}" width="${gs}" height="${gs}" fill="#808080" fill-opacity="${(s.gridOpacity/100).toFixed(3)}"/></pattern></defs><rect width="${s.width}" height="${s.height}" fill="url(#sg)"/>`);
+    // La grille subtile épouse la forme des points ET la disposition
+    const go=` fill-opacity="${(s.gridOpacity/100).toFixed(3)}"`;
+    if(["spiral","sphere","persp"].includes(s.mode)) {
+      // Trame fantôme : toutes les positions de la disposition, sans aléa
+      // (les points < 1 px sont invisibles à cette opacité : on les saute)
+      for (const d of generateDotList(null, true)) {
+        if(d.size<1) continue;
+        parts.push(svgDot(d, "#808080", go));
+      }
+    } else {
+      // Trame régulière : motif répété à la forme du point
+      const cell=s.cellSize, ds=cell*(s.dotScale/100), off=(cell-ds)/2;
+      let motif;
+      if(s.shape==="circle") motif=`<circle cx="${(cell/2).toFixed(2)}" cy="${(cell/2).toFixed(2)}" r="${(ds/2).toFixed(2)}" fill="#808080"${go}/>`;
+      else motif=`<rect x="${off.toFixed(2)}" y="${off.toFixed(2)}" width="${ds.toFixed(2)}" height="${ds.toFixed(2)}"${s.shape==="rounded"?` rx="${(ds*.25).toFixed(2)}"`:""} fill="#808080"${go}/>`;
+      parts.push(`<defs><pattern id="sg" width="${cell}" height="${cell}" patternUnits="userSpaceOnUse">${motif}</pattern></defs><rect width="${s.width}" height="${s.height}" fill="url(#sg)"/>`);
+    }
   }
   for (const d of generateDotList(rng)) {
     if(d.size<.3||d.opacity<=.01) continue;
-    const o=d.opacity<.999?` fill-opacity="${d.opacity.toFixed(2)}"`:"";;
-    if(s.shape==="circle") parts.push(`<circle cx="${d.x.toFixed(1)}" cy="${d.y.toFixed(1)}" r="${(d.size/2).toFixed(2)}" fill="${d.color}"${o}/>`);
-    else { const rx=s.shape==="rounded"?` rx="${(d.size*.25).toFixed(2)}"`:``; parts.push(`<rect x="${(d.x-d.size/2).toFixed(1)}" y="${(d.y-d.size/2).toFixed(1)}" width="${d.size.toFixed(2)}" height="${d.size.toFixed(2)}"${rx} fill="${d.color}"${o}/>`); }
+    const o=d.opacity<.999?` fill-opacity="${d.opacity.toFixed(2)}"`:"";
+    parts.push(svgDot(d, d.color, o));
   }
   parts.push("</svg>"); return parts.join("");
 }
