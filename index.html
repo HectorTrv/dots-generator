@@ -405,23 +405,32 @@
 
   /* ── Presets pills ── */
   .presets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
     margin: 8px 0 2px;
   }
-  .presets button {
-    background: var(--panel-3);
+  .palette-pill {
+    display: flex;
+    height: 26px;
+    padding: 0;
     border: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 11px;
-    padding: 4px 9px;
-    border-radius: 20px;
+    border-radius: 7px;
+    overflow: hidden;
     cursor: pointer;
-    transition: all .1s;
-    font-weight: 500;
+    background: none;
+    transition: border-color .12s, transform .12s;
   }
-  .presets button:hover { border-color: var(--accent-dim); color: var(--text); }
+  .palette-pill span { flex: 1; }
+  .palette-pill:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+  .palette-pill.active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .sub-label {
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
 
   /* Size presets: 2 cols grid */
   .size-presets {
@@ -1047,16 +1056,11 @@
         <span class="s-arrow">▾</span>
       </summary>
       <div class="group-body">
+        <div class="sub-label">Palettes</div>
+        <div class="presets" id="palettePills" role="group" aria-label="Palettes prédéfinies"></div>
+        <div class="sub-label" style="margin-top:6px">Couleurs actives</div>
         <div class="swatches" id="swatches"></div>
         <button class="swatch-add" id="addColor" title="Ajouter une couleur" aria-label="Ajouter une couleur">+</button>
-        <div class="presets" id="palettePills">
-          <button data-palette="green">Verts</button>
-          <button data-palette="blue">Bleus</button>
-          <button data-palette="purple">Violets</button>
-          <button data-palette="warm">Chauds</button>
-          <button data-palette="mono">Mono</button>
-          <button data-palette="candy">Bonbon</button>
-        </div>
         <div class="row-wide">
           <label for="colorDist">Répartition</label>
           <select id="colorDist">
@@ -1198,6 +1202,13 @@ const PALETTES = {
   warm:   ["#ff7043","#ffb300","#f4511e","#ffca28","#e65100"],
   mono:   ["#212121","#424242","#616161","#757575","#9e9e9e"],
   candy:  ["#ff4081","#7c4dff","#00bcd4","#ffd740","#69f0ae"],
+  ocean:  ["#a7e8dd","#64c9b9","#2a9d8f","#1478a0","#0f4c5c"],
+  sunset: ["#ffd166","#f4a261","#e76f51","#c1447e","#6d3b8f"],
+  pastel: ["#f2b8c6","#f7d9b9","#c3e6cb","#b8d8f2","#d9c3ec"],
+};
+const PALETTE_NOMS = {
+  green:"Verts", blue:"Bleus", purple:"Violets", warm:"Chauds", mono:"Monochrome",
+  candy:"Bonbon", ocean:"Océan", sunset:"Couchant", pastel:"Pastel",
 };
 
 /* ── RNG ── */
@@ -1629,24 +1640,39 @@ function renderSwatches() {
     const sw=document.createElement("div"); sw.className="swatch";
     const inp=document.createElement("input"); inp.type="color"; inp.value=c;
     inp.setAttribute("aria-label",`Couleur ${i+1}`);
-    inp.addEventListener("input",()=>{ state.colors[i]=inp.value; render(); });
+    inp.addEventListener("input",()=>{ state.colors[i]=inp.value; clearPaletteActive(); render(); });
     sw.appendChild(inp);
     if(state.colors.length>1) {
       const del=document.createElement("button"); del.className="del"; del.type="button"; del.textContent="×";
       del.setAttribute("aria-label",`Supprimer la couleur ${i+1}`);
-      del.addEventListener("click",e=>{ e.stopPropagation(); state.colors.splice(i,1); renderSwatches(); render(); });
+      del.addEventListener("click",e=>{ e.stopPropagation(); state.colors.splice(i,1); clearPaletteActive(); renderSwatches(); render(); });
       sw.appendChild(del);
     }
     wrap.appendChild(sw);
   });
 }
-document.getElementById("addColor").addEventListener("click",()=>{
+document.getElementById("addColor").addEventListener("click",()=>{ clearPaletteActive();
   state.colors.push("#"+Math.floor(Math.random()*0xffffff).toString(16).padStart(6,"0"));
   renderSwatches(); render();
 });
-document.querySelectorAll("#palettePills button[data-palette]").forEach(b=>{
-  b.addEventListener("click",()=>{ state.colors=[...PALETTES[b.dataset.palette]]; renderSwatches(); render(); });
-});
+function clearPaletteActive() {
+  document.querySelectorAll("#palettePills .palette-pill").forEach(x=>x.classList.remove("active"));
+}
+function renderPalettePills() {
+  const wrap=document.getElementById("palettePills"); wrap.innerHTML="";
+  Object.entries(PALETTES).forEach(([cle,couleurs])=>{
+    const b=document.createElement("button");
+    b.type="button"; b.className="palette-pill"; b.dataset.palette=cle;
+    const nom=PALETTE_NOMS[cle]||cle;
+    b.title=nom; b.setAttribute("aria-label",`Palette ${nom}`);
+    couleurs.forEach(c=>{ const seg=document.createElement("span"); seg.style.background=c; b.appendChild(seg); });
+    b.addEventListener("click",()=>{
+      state.colors=[...couleurs]; renderSwatches(); render();
+      clearPaletteActive(); b.classList.add("active");
+    });
+    wrap.appendChild(b);
+  });
+}
 
 /* ── Randomiser tout ── */
 function hslToHex(h,s,l) {
@@ -1702,7 +1728,7 @@ function randomizeAll() {
   setSlider("rotX",R(0,360)); setSlider("rotY",R(0,360)); setSlider("perspAmount",R(30,80)); setSlider("backFade",R(55,90));
   setSlider("horizon",R(20,50)); setSlider("perspStrength",R(40,85));
   setSlider("waveFreq",R(3,10)); setSlider("waveAmp",R(65,100)); setSelect("waveDir",pick(["horizontal","vertical","diagonal","radial"]));
-  state.colors=randomPalette(); renderSwatches();
+  state.colors=randomPalette(); clearPaletteActive(); renderSwatches();
   setSelect("colorDist",pick(["random","random","horizontal","vertical","radial","depth"]));
   setSlider("grayMix",R(0,45)); setSlider("opacityVar",R(25,65));
   state.bgColor=pick(BG_CHOICES); document.getElementById("bgColor").value=state.bgColor;
@@ -1752,6 +1778,7 @@ document.querySelectorAll("details.group").forEach(d=>{
 /* ── Init ── */
 document.querySelectorAll("#modeGrid button, #shapeSeg button").forEach(b=>b.setAttribute("aria-pressed", b.classList.contains("active") ? "true" : "false"));
 renderSwatches();
+renderPalettePills();
 applyModePreset(state.mode);
 updateVisibility();
 render();
