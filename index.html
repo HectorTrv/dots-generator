@@ -1197,17 +1197,9 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12.002" r="3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M12 2.00195C17.5228 2.00195 22 6.47911 22 12.002C22 17.5248 17.5228 22.002 12 22.002C6.47715 22.002 2 17.5248 2 12.002C2 11.3409 2.06448 10.6949 2.18717 10.0698C2.23327 9.83495 2.25632 9.71751 2.29108 9.63061C2.45182 9.22868 2.60865 9.09965 3.03401 9.01932C3.12598 9.00195 3.41732 9.00195 4 9.00195C5.31297 9.00195 6.42895 8.15849 6.83563 6.98385C7.00941 6.4819 7.0963 6.23093 7.19132 6.14492C7.28634 6.05892 7.52149 6.00292 7.99178 5.89092C9.16127 5.6124 10 4.81124 10 3.50195C10 3.14893 10 2.97242 10.0133 2.8917C10.0842 2.46114 10.3323 2.1913 10.7555 2.08458C10.8348 2.06458 10.9439 2.05541 11.1622 2.03707C11.4384 2.01387 11.7178 2.00195 12 2.00195Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
             Anneau
           </button>
-          <button data-mode="spiral" title="Spirale">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11.9532 2.00004C17.5019 2.00004 22 6.47719 22 12C22 17.5229 17.5019 22 11.9532 22C-0.631103 22 -1.82658 4.01759 11.4985 5.00004C14.8499 5.24714 18.0289 8.41019 18.0289 12C18.0289 16.5 15.2348 18.5 11.4985 18.5C4.5 18.5 3.19042 8.46695 11.0021 9.00004C12.508 9.1028 14.0162 10.3432 14.0162 12C14.0162 13.9279 13 15 11.1211 15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
-            Spirale
-          </button>
           <button data-mode="sphere" title="Sphère 3D">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 10.5C11.1716 10.5 10.5 11.1716 10.5 12C10.5 12.8284 11.1716 13.5 12 13.5C12.8284 13.5 13.5 12.8284 13.5 12C13.5 11.1716 12.8284 10.5 12 10.5ZM12 10.5V2" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M15 8C19.0571 8.52165 22 10.0733 22 11.9063C22 14.1672 17.5228 16 12 16C6.47715 16 2 14.1672 2 11.9063C2 10.0733 4.94289 8.52165 9 8" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/></svg>
             Sphère
-          </button>
-          <button data-mode="persp" title="Perspective">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4.5 11.9999C4.5 9.51223 4.5 8.2684 5.17206 7.38465C5.24545 7.28814 5.32409 7.19589 5.40762 7.10833C6.17248 6.30646 7.38276 6.13056 9.8033 5.77875L12.1623 5.43589C15.5764 4.93968 17.2834 4.69157 18.3917 5.6695C19.5 6.64743 19.5 8.4018 19.5 11.9106V12.0892C19.5 15.598 19.5 17.3523 18.3917 18.3303C17.2834 19.3082 15.5764 19.0601 12.1623 18.5639L9.80329 18.221C7.38275 17.8692 6.17248 17.6933 5.40762 16.8914C5.32409 16.8039 5.24545 16.7116 5.17206 16.6151C4.5 15.7314 4.5 14.4875 4.5 11.9999Z" stroke="currentColor" stroke-width="1.5"/><path d="M12 22L12 2M2 12H22" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/></svg>
-            Persp.
           </button>
           <button data-mode="wave" title="Ondes">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12H6C7.10457 12 8 11.1046 8 10V7C8 5.89543 8.89543 5 10 5C11.1046 5 12 5.89543 12 7V17.0002C12 18.1047 12.8953 19 13.9998 19C15.1043 19 15.9996 18.1047 15.9996 17.0002L15.9996 14C15.9996 12.8954 16.8951 12 17.9996 12H20.9996" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
@@ -1244,20 +1236,10 @@
             <input type="range" id="ringThickness" min="5" max="90" value="35">
             <span class="val" id="ringThicknessVal">35</span>
           </div>
-          <div class="row" data-modes="spiral sphere">
+          <div class="row" data-modes="sphere">
             <label for="count">Nb. points</label>
             <input type="range" id="count" min="50" max="4000" step="10" value="900">
             <span class="val" id="countVal">900</span>
-          </div>
-          <div class="row" data-modes="spiral">
-            <label for="spiralSpacing">Espacement</label>
-            <input type="range" id="spiralSpacing" min="3" max="40" value="14">
-            <span class="val" id="spiralSpacingVal">14</span>
-          </div>
-          <div class="row" data-modes="spiral">
-            <label for="spiralDecay">Décroissance</label>
-            <input type="range" id="spiralDecay" min="-100" max="100" value="40">
-            <span class="val" id="spiralDecayVal">40</span>
           </div>
           <div class="row" data-modes="sphere">
             <label for="rotX">Rotation X</label>
@@ -1278,16 +1260,6 @@
             <label for="backFade">Face arrière</label>
             <input type="range" id="backFade" min="0" max="100" value="75">
             <span class="val" id="backFadeVal">75</span>
-          </div>
-          <div class="row" data-modes="persp">
-            <label for="horizon">Horizon</label>
-            <input type="range" id="horizon" min="0" max="80" value="35">
-            <span class="val" id="horizonVal">35</span>
-          </div>
-          <div class="row" data-modes="persp">
-            <label for="perspStrength">Force</label>
-            <input type="range" id="perspStrength" min="10" max="100" value="55">
-            <span class="val" id="perspStrengthVal">55</span>
           </div>
           <div class="row" data-modes="wave ripple vortex topo">
             <label for="waveFreq">Fréquence</label>
@@ -1363,17 +1335,17 @@
             <button data-shape="circle"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>Cercle</button>
           </div>
         </div>
-        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo image">
+        <div class="row" data-modes="grid disc ring wave ripple vortex topo image">
           <label for="cellSize">Espacement</label>
           <input type="range" id="cellSize" min="6" max="60" value="14">
           <span class="val" id="cellSizeVal">14</span>
         </div>
-        <div class="row" data-modes="grid disc ring wave persp ripple vortex topo image">
+        <div class="row" data-modes="grid disc ring wave ripple vortex topo image">
           <label for="dotScale">Taille du point</label>
           <input type="range" id="dotScale" min="10" max="100" value="55">
           <span class="val" id="dotScaleVal">55</span>
         </div>
-        <div class="row" data-modes="spiral sphere">
+        <div class="row" data-modes="sphere">
           <label for="dotSizePx">Taille du point</label>
           <input type="range" id="dotSizePx" min="2" max="40" value="10">
           <span class="val" id="dotSizePxVal">10</span>
@@ -1387,7 +1359,7 @@
     </details>
 
     <!-- ── Densité ── -->
-    <details class="group" data-modes="grid disc ring wave persp ripple vortex topo image">
+    <details class="group" data-modes="grid disc ring wave ripple vortex topo image">
       <summary>
         Densité
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1588,9 +1560,8 @@ const state = {
   density: 10, clustering: 40,
   fadeMode: "edges", fadeStrength: 50,
   radiusPct: 80, softEdge: 30, ringThickness: 35,
-  count: 900, spiralSpacing: 14, spiralDecay: 40,
+  count: 900,
   rotX: 20, rotY: 25, perspAmount: 55, backFade: 75,
-  horizon: 35, perspStrength: 55,
   waveFreq: 5, waveAmp: 75, waveDir: "horizontal",
   colors: ["#7ed321","#4caf50","#2e7d32","#9ccc65","#5a8f29"],
   colorDist: "random", grayMix: 35, opacityVar: 55,
@@ -1767,22 +1738,6 @@ function ringMask() {
   return (px,py) => { const dd=Math.abs(Math.hypot(px-cx,py-cy)-ringCenter); if(dd>=bandHalf) return 0; if(dd<=bandHalf-soft) return 1; return (bandHalf-dd)/soft; };
 }
 
-function spiralDots(rng, ghost) {
-  const s=state, cx=s.width/2, cy=s.height/2;
-  const golden=Math.PI*(3-Math.sqrt(5)), rMax=Math.hypot(s.width,s.height)/2;
-  const sizeVar=s.sizeVar/100, opacityVar=s.opacityVar/100, decay=s.spiralDecay/100;
-  const dots=[];
-  for (let i=0; i<s.count; i++) {
-    const r=s.spiralSpacing*Math.sqrt(i); if(r>rMax) break;
-    const th=i*golden, x=cx+r*Math.cos(th), y=cy+r*Math.sin(th);
-    if(x<-20||x>s.width+20||y<-20||y>s.height+20) continue;
-    const tr=Math.min(1,r/(Math.min(s.width,s.height)/2));
-    const base=s.dotSizePx*Math.max(.05,1-decay*tr);
-    if (ghost) { dots.push({ x, y, size:base }); continue; }
-    dots.push({ x, y, size:base*(1-sizeVar*rng()), color:pickColor(rng,colorT(x/s.width,y/s.height,tr)), opacity:1-opacityVar*rng() });
-  }
-  return dots;
-}
 
 function sphereDots(rng, ghost) {
   const s=state, cx=s.width/2, cy=s.height/2;
@@ -1807,40 +1762,6 @@ function sphereDots(rng, ghost) {
   return dots;
 }
 
-function perspDots(rng, ghost) {
-  const s=state, cx=s.width/2;
-  const horizonY=(s.horizon/100)*s.height, span=s.height-horizonY;
-  const baseK=s.cellSize/Math.max(1,span-s.cellSize);
-  const k=baseK*(0.3+(s.perspStrength/100)*2.5);
-  const baseDot=s.cellSize*(s.dotScale/100), density=s.density/100;
-  const fadeStrength=s.fadeStrength/100, sizeVar=s.sizeVar/100, opacityVar=s.opacityVar/100;
-  const dots=[];
-  let prevY=s.height+s.cellSize;
-  for (let i=1; i<=400; i++) {
-    const sc=1/(1+(i-1)*k), y=horizonY+(s.height-horizonY)*sc;
-    if(prevY-y<1.2) break; prevY=y;
-    const cellW=s.cellSize*sc; if(cellW<1.5) break;
-    // Trame fantôme : on s'arrête avant l'horizon (illisible et très coûteux en dessous)
-    if(ghost && sc<0.4) break;
-    const cols=Math.ceil(s.width/cellW)+2, depth=1-sc;
-    for (let c=0; c<cols; c++) {
-      if (ghost) {
-        const gx=cx+(c-cols/2)*cellW;
-        if(gx<-cellW||gx>s.width+cellW) continue;
-        dots.push({ x:gx, y, size:baseDot*sc });
-        continue;
-      }
-      const r1=rng(), r2=rng();
-      const x=cx+(c-cols/2)*cellW;
-      if(x<-cellW||x>s.width+cellW) continue;
-      const nx=x/s.width, ny=y/s.height;
-      const local=density*fadeFactor(nx,ny,s.fadeMode,fadeStrength);
-      if(r1>=local) continue;
-      dots.push({ x, y, size:baseDot*sc*(1-sizeVar*rng()), color:pickColor(rng,colorT(nx,ny,depth)), opacity:1-opacityVar*r2 });
-    }
-  }
-  return dots;
-}
 
 /* ── Image importée : trame pilotée par la luminosité ── */
 let imageEchantillon=null;
@@ -1910,9 +1831,7 @@ function generateDotList(rng, ghost) {
     case "ripple": return gridDots(rng, null, makeField("ripple"));
     case "vortex": return gridDots(rng, null, makeField("vortex"));
     case "topo":   return gridDots(rng, null, makeField("topo"));
-    case "spiral": return spiralDots(rng, ghost);
     case "sphere": return sphereDots(rng, ghost);
-    case "persp":  return perspDots(rng, ghost);
     case "image":  return imageDots(rng, ghost);
     default:       return gridDots(rng, null, null);
   }
@@ -1931,7 +1850,7 @@ function generateSVG() {
   if(s.showGrid) {
     // La grille subtile épouse la forme des points ET la disposition
     const go=` fill-opacity="${(s.gridOpacity/100).toFixed(3)}"`;
-    if(["spiral","sphere","persp"].includes(s.mode)) {
+    if(s.mode==="sphere") {
       // Trame fantôme : toutes les positions de la disposition, sans aléa
       // (les points < 1 px sont invisibles à cette opacité : on les saute)
       for (const d of generateDotList(null, true)) {
@@ -2063,14 +1982,10 @@ bindSlider("radiusPct","radiusPct");
 bindSlider("softEdge","softEdge");
 bindSlider("ringThickness","ringThickness");
 bindSlider("count","count");
-bindSlider("spiralSpacing","spiralSpacing");
-bindSlider("spiralDecay","spiralDecay");
 bindSlider("rotX","rotX");
 bindSlider("rotY","rotY");
 bindSlider("perspAmount","perspAmount");
 bindSlider("backFade","backFade");
-bindSlider("horizon","horizon");
-bindSlider("perspStrength","perspStrength");
 bindSlider("waveFreq","waveFreq");
 bindSlider("imgContrast","imgContrast");
 bindSlider("waveAmp","waveAmp");
@@ -2493,9 +2408,7 @@ const MODE_PRESETS = {
   grid:   { sliders:{ cellSize:16, dotScale:55, sizeVar:35, density:42, clustering:55, fadeStrength:45 }, selects:{ fadeMode:"edges" } },
   disc:   { sliders:{ cellSize:14, dotScale:58, sizeVar:30, density:55, clustering:45, radiusPct:82, softEdge:35 }, selects:{ fadeMode:"none" } },
   ring:   { sliders:{ cellSize:13, dotScale:60, sizeVar:30, density:60, clustering:35, radiusPct:88, softEdge:40, ringThickness:40 }, selects:{ fadeMode:"none" } },
-  spiral: { sliders:{ dotSizePx:9, sizeVar:25, count:1400, spiralSpacing:13, spiralDecay:55, opacityVar:45 }, selects:{ colorDist:"radial" } },
   sphere: { sliders:{ dotSizePx:8, sizeVar:20, count:1300, radiusPct:78, rotX:18, rotY:32, perspAmount:60, backFade:80 }, selects:{ colorDist:"depth" } },
-  persp:  { sliders:{ cellSize:18, dotScale:55, sizeVar:25, density:65, horizon:32, perspStrength:60 }, selects:{ fadeMode:"none", colorDist:"depth" } },
   wave:   { sliders:{ cellSize:14, dotScale:62, sizeVar:25, density:65, clustering:15, waveFreq:5, waveAmp:85 }, selects:{ fadeMode:"none" } },
   ripple: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:7, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
   vortex: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:8, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
@@ -2512,7 +2425,7 @@ const BG_CHOICES=["#f4f5f4","#ffffff","#f7f3ec","#eef1f6","#f2ecf5","#101418","#
 function randomizeAll() {
   animerScene();
   const R=(min,max)=>Math.round(min+Math.random()*(max-min)), pick=arr=>arr[Math.floor(Math.random()*arr.length)];
-  const modesDispo=["grid","disc","ring","spiral","sphere","persp","wave","ripple","vortex","topo"];
+  const modesDispo=["grid","disc","ring","sphere","wave","ripple","vortex","topo"];
   if(imageEchantillon) modesDispo.push("image");
   activerMode(pick(modesDispo));
   document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","circle"])}"]`).click();
@@ -2520,9 +2433,8 @@ function randomizeAll() {
   setSlider("density",R(25,70)); setSlider("clustering",R(10,70));
   setSelect("fadeMode",pick(["none","edges","edges","center","top","bottom","left","right"])); setSlider("fadeStrength",R(30,70));
   setSlider("radiusPct",R(65,95)); setSlider("softEdge",R(15,55)); setSlider("ringThickness",R(25,55));
-  setSlider("count",R(60,220)*10); setSlider("spiralSpacing",R(10,20)); setSlider("spiralDecay",R(-40,80));
+  setSlider("count",R(60,220)*10);
   setSlider("rotX",R(0,360)); setSlider("rotY",R(0,360)); setSlider("perspAmount",R(30,80)); setSlider("backFade",R(55,90));
-  setSlider("horizon",R(20,50)); setSlider("perspStrength",R(40,85));
   setSlider("waveFreq",R(3,10)); setSlider("waveAmp",R(65,100)); setSelect("waveDir",pick(["horizontal","vertical","diagonal","radial"]));
   state.colors=randomPalette(); clearPaletteActive(); renderSwatches();
   setSelect("colorDist",pick(["random","random","horizontal","vertical","radial","depth"]));
