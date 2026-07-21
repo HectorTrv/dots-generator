@@ -1245,14 +1245,6 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-linejoin="round" stroke-width="1.5"/></svg>
             Disque
           </button>
-          <button data-mode="ring" title="Anneau">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12.002" r="3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M12 2.00195C17.5228 2.00195 22 6.47911 22 12.002C22 17.5248 17.5228 22.002 12 22.002C6.47715 22.002 2 17.5248 2 12.002C2 11.3409 2.06448 10.6949 2.18717 10.0698C2.23327 9.83495 2.25632 9.71751 2.29108 9.63061C2.45182 9.22868 2.60865 9.09965 3.03401 9.01932C3.12598 9.00195 3.41732 9.00195 4 9.00195C5.31297 9.00195 6.42895 8.15849 6.83563 6.98385C7.00941 6.4819 7.0963 6.23093 7.19132 6.14492C7.28634 6.05892 7.52149 6.00292 7.99178 5.89092C9.16127 5.6124 10 4.81124 10 3.50195C10 3.14893 10 2.97242 10.0133 2.8917C10.0842 2.46114 10.3323 2.1913 10.7555 2.08458C10.8348 2.06458 10.9439 2.05541 11.1622 2.03707C11.4384 2.01387 11.7178 2.00195 12 2.00195Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
-            Anneau
-          </button>
-          <button data-mode="sphere" title="Sphère 3D">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 10.5C11.1716 10.5 10.5 11.1716 10.5 12C10.5 12.8284 11.1716 13.5 12 13.5C12.8284 13.5 13.5 12.8284 13.5 12C13.5 11.1716 12.8284 10.5 12 10.5ZM12 10.5V2" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/><path d="M15 8C19.0571 8.52165 22 10.0733 22 11.9063C22 14.1672 17.5228 16 12 16C6.47715 16 2 14.1672 2 11.9063C2 10.0733 4.94289 8.52165 9 8" stroke="currentColor" stroke-linecap="round" stroke-width="1.5"/></svg>
-            Sphère
-          </button>
           <button data-mode="wave" title="Ondes">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 12H6C7.10457 12 8 11.1046 8 10V7C8 5.89543 8.89543 5 10 5C11.1046 5 12 5.89543 12 7V17.0002C12 18.1047 12.8953 19 13.9998 19C15.1043 19 15.9996 18.1047 15.9996 17.0002L15.9996 14C15.9996 12.8954 16.8951 12 17.9996 12H20.9996" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
             Ondes
@@ -1273,45 +1265,15 @@
 
         <!-- Paramètres contextuels du mode sélectionné -->
         <div id="modeParamsCard">
-          <div class="row" data-modes="disc ring sphere">
+          <div class="row" data-modes="disc">
             <label for="radiusPct">Rayon</label>
             <input type="range" id="radiusPct" min="10" max="110" value="80">
             <span class="val" id="radiusPctVal">80</span>
           </div>
-          <div class="row" data-modes="disc ring">
+          <div class="row" data-modes="disc">
             <label for="softEdge">Bord flou</label>
             <input type="range" id="softEdge" min="0" max="100" value="30">
             <span class="val" id="softEdgeVal">30</span>
-          </div>
-          <div class="row" data-modes="ring">
-            <label for="ringThickness">Épaisseur</label>
-            <input type="range" id="ringThickness" min="5" max="90" value="35">
-            <span class="val" id="ringThicknessVal">35</span>
-          </div>
-          <div class="row" data-modes="sphere">
-            <label for="count">Nb. points</label>
-            <input type="range" id="count" min="50" max="4000" step="10" value="900">
-            <span class="val" id="countVal">900</span>
-          </div>
-          <div class="row" data-modes="sphere">
-            <label for="rotX">Rotation X</label>
-            <input type="range" id="rotX" min="0" max="360" value="20">
-            <span class="val" id="rotXVal">20</span>
-          </div>
-          <div class="row" data-modes="sphere">
-            <label for="rotY">Rotation Y</label>
-            <input type="range" id="rotY" min="0" max="360" value="25">
-            <span class="val" id="rotYVal">25</span>
-          </div>
-          <div class="row" data-modes="sphere">
-            <label for="perspAmount">Perspective</label>
-            <input type="range" id="perspAmount" min="0" max="100" value="55">
-            <span class="val" id="perspAmountVal">55</span>
-          </div>
-          <div class="row" data-modes="sphere">
-            <label for="backFade">Face arrière</label>
-            <input type="range" id="backFade" min="0" max="100" value="75">
-            <span class="val" id="backFadeVal">75</span>
           </div>
           <div class="row" data-modes="wave ripple vortex topo">
             <label for="waveFreq">Fréquence</label>
@@ -1393,20 +1355,15 @@
             <button data-shape="circle"><svg width="10" height="10" viewBox="0 0 12 12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>Cercle</button>
           </div>
         </div>
-        <div class="row" data-modes="grid disc ring wave ripple vortex topo image">
+        <div class="row" data-modes="grid disc wave ripple vortex topo image">
           <label for="cellSize">Espacement</label>
           <input type="range" id="cellSize" min="6" max="60" value="14">
           <span class="val" id="cellSizeVal">14</span>
         </div>
-        <div class="row" data-modes="grid disc ring wave ripple vortex topo image">
+        <div class="row" data-modes="grid disc wave ripple vortex topo image">
           <label for="dotScale">Taille du point</label>
           <input type="range" id="dotScale" min="10" max="100" value="55">
           <span class="val" id="dotScaleVal">55</span>
-        </div>
-        <div class="row" data-modes="sphere">
-          <label for="dotSizePx">Taille du point</label>
-          <input type="range" id="dotSizePx" min="2" max="40" value="10">
-          <span class="val" id="dotSizePxVal">10</span>
         </div>
         <div class="row">
           <label for="sizeVar">Variation taille</label>
@@ -1417,7 +1374,7 @@
     </details>
 
     <!-- ── Densité ── -->
-    <details class="group" data-modes="grid disc ring wave ripple vortex topo image">
+    <details class="group" data-modes="grid disc wave ripple vortex topo image">
       <summary>
         Densité
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1619,12 +1576,10 @@ const state = {
   mode: "grid",
   width: 1920, height: 1080,
   shape: "square",
-  cellSize: 14, dotScale: 55, dotSizePx: 10, sizeVar: 30,
+  cellSize: 14, dotScale: 55, sizeVar: 30,
   density: 10, clustering: 40,
   fadeMode: "edges", fadeStrength: 50,
-  radiusPct: 80, softEdge: 30, ringThickness: 35,
-  count: 900,
-  rotX: 20, rotY: 25, perspAmount: 55, backFade: 75,
+  radiusPct: 80, softEdge: 30,
   waveFreq: 5, waveAmp: 75, waveDir: "horizontal",
   colors: ["#7ed321","#4caf50","#2e7d32","#9ccc65","#5a8f29"],
   colorDist: "random", grayMix: 35, opacityVar: 55,
@@ -1793,37 +1748,8 @@ function discMask() {
   return (px,py) => { const d=Math.hypot(px-cx,py-cy); if(d>=r) return 0; if(d<=r-soft) return 1; return (r-d)/soft; };
 }
 
-function ringMask() {
-  const s=state, cx=s.width/2, cy=s.height/2;
-  const r=(s.radiusPct/100)*Math.min(s.width,s.height)/2;
-  const bandHalf=Math.max(2,r*(s.ringThickness/200)), ringCenter=r-bandHalf;
-  const soft=Math.max(1,(s.softEdge/100)*bandHalf);
-  return (px,py) => { const dd=Math.abs(Math.hypot(px-cx,py-cy)-ringCenter); if(dd>=bandHalf) return 0; if(dd<=bandHalf-soft) return 1; return (bandHalf-dd)/soft; };
-}
 
 
-function sphereDots(rng, ghost) {
-  const s=state, cx=s.width/2, cy=s.height/2;
-  const R=(s.radiusPct/100)*Math.min(s.width,s.height)/2;
-  const rx=(s.rotX*Math.PI)/180, ry=(s.rotY*Math.PI)/180;
-  const cosX=Math.cos(rx), sinX=Math.sin(rx), cosY=Math.cos(ry), sinY=Math.sin(ry);
-  const f=1.6+(1-s.perspAmount/100)*10, N=Math.max(2,s.count);
-  const sizeVar=s.sizeVar/100, opacityVar=s.opacityVar/100, backFade=s.backFade/100;
-  const golden=Math.PI*(3-Math.sqrt(5)), dots=[];
-  for (let i=0; i<N; i++) {
-    let py=1-(i/(N-1))*2, rad=Math.sqrt(Math.max(0,1-py*py)), th=golden*i;
-    let px=rad*Math.cos(th), pz=rad*Math.sin(th);
-    let y1=py*cosX-pz*sinX, z1=py*sinX+pz*cosX;
-    let x2=px*cosY+z1*sinY, z2=-px*sinY+z1*cosY;
-    const sc=f/(f+z2), sx=cx+x2*R*sc, sy=cy+y1*R*sc;
-    const depth=(z2+1)/2, fade=1-backFade*depth;
-    if (ghost) { dots.push({ x:sx, y:sy, z:z2, size:s.dotSizePx*sc }); continue; }
-    if(fade<=.02) continue;
-    dots.push({ x:sx, y:sy, z:z2, size:s.dotSizePx*sc*(1-sizeVar*rng()), color:pickColor(rng,colorT(sx/s.width,sy/s.height,depth)), opacity:(1-opacityVar*rng())*fade });
-  }
-  dots.sort((a,b)=>b.z-a.z);
-  return dots;
-}
 
 
 /* ── Image importée : trame pilotée par la luminosité ── */
@@ -1889,12 +1815,10 @@ function imageDots(rng, ghost) {
 function generateDotList(rng, ghost) {
   switch(state.mode) {
     case "disc":   return gridDots(rng, discMask(), null);
-    case "ring":   return gridDots(rng, ringMask(), null);
     case "wave":   return gridDots(rng, null, makeField("wave"));
     case "ripple": return gridDots(rng, null, makeField("ripple"));
     case "vortex": return gridDots(rng, null, makeField("vortex"));
     case "topo":   return gridDots(rng, null, makeField("topo"));
-    case "sphere": return sphereDots(rng, ghost);
     case "image":  return imageDots(rng, ghost);
     default:       return gridDots(rng, null, null);
   }
@@ -1913,21 +1837,12 @@ function generateSVG() {
   if(s.showGrid) {
     // La grille subtile épouse la forme des points ET la disposition
     const go=` fill-opacity="${(s.gridOpacity/100).toFixed(3)}"`;
-    if(s.mode==="sphere") {
-      // Trame fantôme : toutes les positions de la disposition, sans aléa
-      // (les points < 1 px sont invisibles à cette opacité : on les saute)
-      for (const d of generateDotList(null, true)) {
-        if(d.size<1) continue;
-        parts.push(svgDot(d, "#808080", go));
-      }
-    } else {
-      // Trame régulière : motif répété à la forme du point
-      const cell=s.cellSize, ds=cell*(s.dotScale/100), off=(cell-ds)/2;
-      let motif;
-      if(s.shape==="circle") motif=`<circle cx="${(cell/2).toFixed(2)}" cy="${(cell/2).toFixed(2)}" r="${(ds/2).toFixed(2)}" fill="#808080"${go}/>`;
-      else motif=`<rect x="${off.toFixed(2)}" y="${off.toFixed(2)}" width="${ds.toFixed(2)}" height="${ds.toFixed(2)}"${s.shape==="rounded"?` rx="${(ds*.25).toFixed(2)}"`:""} fill="#808080"${go}/>`;
-      parts.push(`<defs><pattern id="sg" width="${cell}" height="${cell}" patternUnits="userSpaceOnUse">${motif}</pattern></defs><rect width="${s.width}" height="${s.height}" fill="url(#sg)"/>`);
-    }
+    // Trame régulière : motif répété à la forme du point
+    const cell=s.cellSize, ds=cell*(s.dotScale/100), off=(cell-ds)/2;
+    let motif;
+    if(s.shape==="circle") motif=`<circle cx="${(cell/2).toFixed(2)}" cy="${(cell/2).toFixed(2)}" r="${(ds/2).toFixed(2)}" fill="#808080"${go}/>`;
+    else motif=`<rect x="${off.toFixed(2)}" y="${off.toFixed(2)}" width="${ds.toFixed(2)}" height="${ds.toFixed(2)}"${s.shape==="rounded"?` rx="${(ds*.25).toFixed(2)}"`:""} fill="#808080"${go}/>`;
+    parts.push(`<defs><pattern id="sg" width="${cell}" height="${cell}" patternUnits="userSpaceOnUse">${motif}</pattern></defs><rect width="${s.width}" height="${s.height}" fill="url(#sg)"/>`);
   }
   for (const d of generateDotList(rng)) {
     if(d.size<.3||d.opacity<=.01) continue;
@@ -2047,7 +1962,6 @@ function bindSlider(id, key) {
 
 bindSlider("cellSize","cellSize");
 bindSlider("dotScale","dotScale");
-bindSlider("dotSizePx","dotSizePx");
 bindSlider("sizeVar","sizeVar");
 bindSlider("density","density");
 bindSlider("clustering","clustering");
@@ -2057,12 +1971,6 @@ bindSlider("opacityVar","opacityVar");
 bindSlider("gridOpacity","gridOpacity");
 bindSlider("radiusPct","radiusPct");
 bindSlider("softEdge","softEdge");
-bindSlider("ringThickness","ringThickness");
-bindSlider("count","count");
-bindSlider("rotX","rotX");
-bindSlider("rotY","rotY");
-bindSlider("perspAmount","perspAmount");
-bindSlider("backFade","backFade");
 bindSlider("waveFreq","waveFreq");
 bindSlider("imgContrast","imgContrast");
 bindSlider("waveAmp","waveAmp");
@@ -2494,8 +2402,6 @@ function setSelect(id,v) {
 const MODE_PRESETS = {
   grid:   { sliders:{ cellSize:16, dotScale:55, sizeVar:35, density:42, clustering:55, fadeStrength:45 }, selects:{ fadeMode:"edges" } },
   disc:   { sliders:{ cellSize:14, dotScale:58, sizeVar:30, density:55, clustering:45, radiusPct:82, softEdge:35 }, selects:{ fadeMode:"none" } },
-  ring:   { sliders:{ cellSize:13, dotScale:60, sizeVar:30, density:60, clustering:35, radiusPct:88, softEdge:40, ringThickness:40 }, selects:{ fadeMode:"none" } },
-  sphere: { sliders:{ dotSizePx:8, sizeVar:20, count:1300, radiusPct:78, rotX:18, rotY:32, perspAmount:60, backFade:80 }, selects:{ colorDist:"depth" } },
   wave:   { sliders:{ cellSize:14, dotScale:62, sizeVar:25, density:65, clustering:15, waveFreq:5, waveAmp:85 }, selects:{ fadeMode:"none" } },
   ripple: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:7, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
   vortex: { sliders:{ cellSize:13, dotScale:62, sizeVar:20, density:70, clustering:0, waveFreq:8, waveAmp:90 }, selects:{ fadeMode:"none", colorDist:"radial" } },
@@ -2512,16 +2418,14 @@ const BG_CHOICES=["#f4f5f4","#ffffff","#f7f3ec","#eef1f6","#f2ecf5","#101418","#
 function randomizeAll() {
   animerScene();
   const R=(min,max)=>Math.round(min+Math.random()*(max-min)), pick=arr=>arr[Math.floor(Math.random()*arr.length)];
-  const modesDispo=["grid","disc","ring","sphere","wave","ripple","vortex","topo"];
+  const modesDispo=["grid","disc","wave","ripple","vortex","topo"];
   if(imageEchantillon) modesDispo.push("image");
   activerMode(pick(modesDispo));
   document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","circle"])}"]`).click();
-  setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("dotSizePx",R(5,14)); setSlider("sizeVar",R(10,55));
+  setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("sizeVar",R(10,55));
   setSlider("density",R(25,70)); setSlider("clustering",R(10,70));
   setSelect("fadeMode",pick(["none","edges","edges","center","top","bottom","left","right"])); setSlider("fadeStrength",R(30,70));
-  setSlider("radiusPct",R(65,95)); setSlider("softEdge",R(15,55)); setSlider("ringThickness",R(25,55));
-  setSlider("count",R(60,220)*10);
-  setSlider("rotX",R(0,360)); setSlider("rotY",R(0,360)); setSlider("perspAmount",R(30,80)); setSlider("backFade",R(55,90));
+  setSlider("radiusPct",R(65,95)); setSlider("softEdge",R(15,55));
   setSlider("waveFreq",R(3,10)); setSlider("waveAmp",R(65,100)); setSelect("waveDir",pick(["horizontal","vertical","diagonal","radial"]));
   state.colors=randomPalette(); clearPaletteActive(); renderSwatches();
   setSelect("colorDist",pick(["random","random","horizontal","vertical","radial","depth"]));
