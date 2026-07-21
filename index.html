@@ -437,11 +437,18 @@
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    height: 34px;
+    padding: 0 11px;
+    background: var(--panel-2);
+    border-radius: 8px;
+    cursor: pointer;
   }
   .row-toggle > label:first-child {
-    font-size: 10.5px;
-    font-weight: 600;
-    color: var(--text-dim);
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+    flex: 1;
   }
 
   /* ── Menus déroulants sur mesure ── */
@@ -723,16 +730,24 @@
   }
 
   /* ── Pastille couleur du fond ── */
-  .mini-swatch {
-    width: 34px; height: 26px;
+  .bg-bar {
+    width: 100%;
+    height: 36px;
     border: 1px solid var(--border);
-    border-radius: 7px;
+    border-radius: 8px;
     cursor: pointer;
-    flex-shrink: 0;
     padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     transition: border-color .12s, transform .12s;
   }
-  .mini-swatch:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+  .bg-bar:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+  .bg-bar span {
+    font-size: 11.5px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+  }
 
   /* ── Sélecteur de couleur ── */
   .picker {
@@ -845,24 +860,25 @@
     position: absolute; opacity: 0; width: 0; height: 0;
   }
   .toggle-track {
-    width: 30px; height: 17px;
-    background: var(--panel-3);
+    width: 36px; height: 20px;
+    background: var(--slider-fill);
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 11px;
     position: relative;
-    transition: background .15s, border-color .15s;
+    transition: background .18s, border-color .18s;
   }
   .toggle-track::after {
     content: '';
     position: absolute;
-    width: 11px; height: 11px;
-    background: var(--text-dim);
+    width: 14px; height: 14px;
+    background: var(--text-mid);
     border-radius: 50%;
     top: 2px; left: 2px;
     transition: transform .38s var(--ease-spring), background .18s;
   }
+  .toggle:hover .toggle-track { border-color: var(--border-hover); }
   .toggle input:checked ~ .toggle-track { background: var(--accent); border-color: var(--accent); }
-  .toggle input:checked ~ .toggle-track::after { transform: translateX(13px); background: #101014; }
+  .toggle input:checked ~ .toggle-track::after { transform: translateX(16px); background: #101014; }
 
   /* ── Export footer ── */
   .sidebar-footer {
@@ -1403,7 +1419,7 @@
       <div class="group-body">
         <div class="row-wide">
           <label for="bgColor">Couleur</label>
-          <button class="mini-swatch" id="bgColor" type="button" aria-label="Couleur du fond : #f4f5f4 — modifier" style="background:#f4f5f4"></button>
+          <button class="bg-bar" id="bgColor" type="button" aria-label="Couleur du fond : #f4f5f4 — modifier"><span id="bgHex">#f4f5f4</span></button>
         </div>
         <div class="row-toggle">
           <label for="bgTransparent">Transparent</label>
@@ -2064,15 +2080,22 @@ function initDropdown(id, cle) {
 initDropdown("fadeMode","fadeMode");
 initDropdown("waveDir","waveDir");
 initDropdown("colorDist","colorDist");
+function majBarreFond() {
+  const b=document.getElementById("bgColor");
+  b.style.background=state.bgColor;
+  const [,,l]=hexToHsl(state.bgColor);
+  b.querySelector("#bgHex").style.color = l>55 ? "#101014" : "#f2f2f5";
+  b.querySelector("#bgHex").textContent=state.bgColor;
+  b.setAttribute("aria-label",`Couleur du fond : ${state.bgColor} — modifier`);
+}
 document.getElementById("bgColor").addEventListener("click", e=>{
-  const b=e.currentTarget;
-  picker.ouvrir(b, state.bgColor, hx=>{
+  picker.ouvrir(e.currentTarget, state.bgColor, hx=>{
     state.bgColor=hx;
-    b.style.background=hx;
-    b.setAttribute("aria-label",`Couleur du fond : ${hx} — modifier`);
+    majBarreFond();
     render();
   });
 });
+majBarreFond();
 document.getElementById("bgTransparent").addEventListener("change", e=>{ state.bgTransparent=e.target.checked; render(); });
 document.getElementById("imgInvert").addEventListener("change", e=>{ state.imgInvert=e.target.checked; render(); });
 const zoneImage=document.getElementById("imageZone");
@@ -2374,9 +2397,7 @@ function randomizeAll() {
   const fondsClairs=[hslToHex(teinteP,18,96), hslToHex(teinteP,10,98), "#ffffff", hslToHex((teinteP+180)%360,12,96)];
   const fondsSombres=[hslToHex(teinteP,22,9), hslToHex(teinteP,30,6)];
   state.bgColor=Math.random()<.7?pick(fondsClairs):pick(fondsSombres);
-  const pastilleFond=document.getElementById("bgColor");
-  pastilleFond.style.background=state.bgColor;
-  pastilleFond.setAttribute("aria-label",`Couleur du fond : ${state.bgColor} — modifier`);
+  majBarreFond();
   state.seed=Math.floor(Math.random()*1000000); render();
 }
 document.getElementById("randomize").addEventListener("click", randomizeAll);
