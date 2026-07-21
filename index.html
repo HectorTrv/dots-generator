@@ -251,17 +251,40 @@
     position: relative;
   }
   .dims-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    height: 30px;
     font-size: 11.5px;
     color: var(--text-dim);
     font-variant-numeric: tabular-nums;
     background: var(--panel-2);
     border: 1px solid var(--border);
-    padding: 5px 10px;
-    border-radius: 6px;
+    padding: 0 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: border-color .12s, color .12s;
     white-space: nowrap;
   }
+  .dims-badge .dims-chevron {
+    color: var(--text-dim);
+    transition: transform .34s var(--ease-spring);
+  }
+  .dims-wrap.open .dims-chevron { transform: rotate(180deg); }
+  .seed-copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px; height: 22px;
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: color .12s, background .12s;
+  }
+  .seed-copy:hover { color: var(--text); background: var(--panel-3); }
   .dims-badge:hover, .dims-wrap.open .dims-badge {
     border-color: var(--border-hover);
     color: var(--text);
@@ -1522,7 +1545,11 @@
 <main>
   <div class="toolbar">
     <div class="dims-wrap" id="dimsWrap">
-      <button class="dims-badge" id="dimsLabel" aria-haspopup="true" aria-expanded="false">1920 × 1080</button>
+      <button class="dims-badge" id="dimsLabel" aria-haspopup="true" aria-expanded="false">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2 12C2 7.75736 2 5.63604 3.17157 4.31802C4.34315 3 6.22876 3 10 3H14C17.7712 3 19.6569 3 20.8284 4.31802C22 5.63604 22 7.75736 22 12C22 16.2426 22 18.364 20.8284 19.682C19.6569 21 17.7712 21 14 21H10C6.22876 21 4.34315 21 3.17157 19.682C2 18.364 2 16.2426 2 12Z" stroke="currentColor" stroke-width="1.5"/><path d="M2 9H10C12.8284 9 14.2426 9 15.1213 9.87868C16 10.7574 16 12.1716 16 15V21" stroke="currentColor" stroke-width="1.5"/><path d="M10 21L10 9" stroke="currentColor" stroke-width="1.5"/></svg>
+        <span id="dimsText">1920 × 1080</span>
+        <svg class="dims-chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg>
+      </button>
       <div class="dims-popover" id="dimsPopover">
         <div class="dims-popover-title">Dimensions</div>
         <div class="dim-row">
@@ -1543,6 +1570,7 @@
     <div class="seed-edit">
       <label for="seedInput">ID</label>
       <input id="seedInput" type="text" inputmode="numeric" maxlength="6" spellcheck="false" autocomplete="off" title="Collez un ID pour reproduire exactement ce visuel">
+      <button type="button" class="seed-copy" id="seedCopy" title="Copier l'ID" aria-label="Copier l'ID"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 15C9 12.1716 9 10.7574 9.87868 9.87868C10.7574 9 12.1716 9 15 9L16 9C18.8284 9 20.2426 9 21.1213 9.87868C22 10.7574 22 12.1716 22 15V16C22 18.8284 22 20.2426 21.1213 21.1213C20.2426 22 18.8284 22 16 22H15C12.1716 22 10.7574 22 9.87868 21.1213C9 20.2426 9 18.8284 9 16L9 15Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/><path d="M16.9999 9C16.9975 6.04291 16.9528 4.51121 16.092 3.46243C15.9258 3.25989 15.7401 3.07418 15.5376 2.90796C14.4312 2 12.7875 2 9.5 2C6.21252 2 4.56878 2 3.46243 2.90796C3.25989 3.07417 3.07418 3.25989 2.90796 3.46243C2 4.56878 2 6.21252 2 9.5C2 12.7875 2 14.4312 2.90796 15.5376C3.07417 15.7401 3.25989 15.9258 3.46243 16.092C4.51121 16.9528 6.04291 16.9975 9 16.9999" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></button>
     </div>
     <div class="spacer"></div>
     <div class="export-wrap" id="exportWrap">
@@ -1919,7 +1947,7 @@ function render() {
   setTimeout(() => {
     renderQueued=false;
     preview.innerHTML=generateSVG();
-    document.getElementById("dimsLabel").textContent=`${state.width} × ${state.height}`;
+    document.getElementById("dimsText").textContent=`${state.width} × ${state.height}`;
     const seedInput=document.getElementById("seedInput");
     if(document.activeElement!==seedInput) seedInput.value=String(state.seed).padStart(6,"0");
   }, 0);
@@ -1933,6 +1961,20 @@ document.getElementById("seedInput").addEventListener("change", e=>{
 });
 document.getElementById("seedInput").addEventListener("keydown", e=>{
   if(e.key==="Enter") e.target.blur();
+});
+document.getElementById("seedCopy").addEventListener("click", async ()=>{
+  const id=String(state.seed).padStart(6,"0");
+  try {
+    await navigator.clipboard.writeText(id);
+    showToast("ID copié");
+  } catch {
+    // Repli : sélection du champ + execCommand
+    const inp=document.getElementById("seedInput");
+    inp.select();
+    const ok=document.execCommand("copy");
+    inp.blur(); window.getSelection()?.removeAllRanges();
+    showToast(ok?"ID copié":"Copie impossible");
+  }
 });
 
 /* ── Exports ── */
