@@ -103,13 +103,6 @@
   }
   details.group summary::-webkit-details-marker { display: none; }
   details.group[open] > summary { color: var(--text); }
-  details.group summary .s-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--border-hover);
-    flex-shrink: 0;
-    transition: background .15s;
-  }
-  details.group[open] > summary .s-dot { background: var(--accent); }
   details.group summary {
     position: sticky;
     top: 0;
@@ -1206,7 +1199,6 @@
     <!-- ── Disposition ── -->
     <details class="group" open>
       <summary>
-        <span class="s-dot"></span>
         Disposition
         <span class="s-hint" id="hintDispo"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1383,7 +1375,6 @@
     <!-- ── Dots ── -->
     <details class="group" open>
       <summary>
-        <span class="s-dot"></span>
         Points
         <span class="s-hint" id="hintPoints"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1423,7 +1414,6 @@
     <!-- ── Densité ── -->
     <details class="group" data-modes="grid disc ring wave persp ripple vortex topo image">
       <summary>
-        <span class="s-dot"></span>
         Densité
         <span class="s-hint" id="hintDensite"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1468,7 +1458,6 @@
     <!-- ── Couleurs ── -->
     <details class="group" open>
       <summary>
-        <span class="s-dot"></span>
         Couleurs
         <span class="s-hint" id="hintCouleurs"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
@@ -1512,7 +1501,6 @@
     <!-- ── Fond ── -->
     <details class="group">
       <summary>
-        <span class="s-dot"></span>
         Fond
         <span class="s-hint" id="hintFond"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
