@@ -2380,11 +2380,6 @@ function randomizeAll() {
   const modesDispo=["grid","disc","wave","ripple","vortex","topo"];
   if(imageEchantillon) modesDispo.push("image");
   activerMode(pick(modesDispo));
-  // Dimensions variées (Full HD favorisé, mais formats carrés/verticaux/bannières aussi)
-  const [fw,fh]=pick([[1920,1080],[1920,1080],[2560,1440],[1080,1080],[1080,1080],[1080,1920],[1600,840],[1584,396]]);
-  state.width=fw; state.height=fh;
-  document.getElementById("canvasW").value=fw;
-  document.getElementById("canvasH").value=fh;
   // Formes douces légèrement favorisées
   document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","rounded","circle"])}"]`).click();
   setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("sizeVar",R(15,55));
