@@ -690,6 +690,30 @@
     z-index: 50;
   }
 
+  /* ── Références d'images ── */
+  .img-refs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    width: 100%;
+  }
+  .img-refs button {
+    padding: 0;
+    height: 46px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    overflow: hidden;
+    cursor: pointer;
+    background: none;
+    transition: border-color .12s var(--ease-out), transform .12s var(--ease-out);
+  }
+  .img-refs button:hover { border-color: var(--border-hover); transform: translateY(-1px); }
+  .img-refs button img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   /* ── Pastille couleur du fond ── */
   .mini-swatch {
     width: 34px; height: 26px;
@@ -1293,6 +1317,12 @@
               </div>
             </div>
             <input type="file" id="imageInput" accept="image/*" hidden>
+            <div class="sub-label" style="margin-top:4px">Références</div>
+            <div class="img-refs" role="group" aria-label="Images de référence">
+              <button type="button" data-ref="img/ref-portrait.jpg" title="Portrait" aria-label="Charger la référence portrait"><img src="img/ref-portrait.jpg" alt=""></button>
+              <button type="button" data-ref="img/ref-immeuble.jpg" title="Immeuble" aria-label="Charger la référence immeuble"><img src="img/ref-immeuble.jpg" alt=""></button>
+              <button type="button" data-ref="img/ref-planete.jpg" title="Planète" aria-label="Charger la référence planète"><img src="img/ref-planete.jpg" alt=""></button>
+            </div>
           </div>
           <div class="row" data-modes="image">
             <label for="imgContrast">Contraste</label>
@@ -2192,6 +2222,16 @@ function brancherDepot(cible, surClasse) {
     if(state.mode!=="image") activerMode("image");
   });
 }
+document.querySelectorAll(".img-refs button").forEach(b=>{
+  b.addEventListener("click", async ()=>{
+    try {
+      const rep=await fetch(b.dataset.ref);
+      if(!rep.ok) throw new Error();
+      const blob=await rep.blob();
+      chargerImage(new File([blob], b.dataset.ref.split("/").pop(), {type: blob.type||"image/jpeg"}));
+    } catch { showToast("Référence indisponible"); }
+  });
+});
 brancherDepot(zoneImage, "survol");
 brancherDepot(document.querySelector(".stage"), "survol-drop");
 document.addEventListener("dragover", e=>e.preventDefault());
