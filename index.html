@@ -1685,13 +1685,15 @@ function gridDots(rng, maskFn, fieldFn) {
       const cx=gx*cell+cell/2, cy=gy*cell+cell/2;
       const nx=cx/s.width, ny=cy/s.height;
       let local = density*fadeFactor(nx,ny,s.fadeMode,fadeStrength);
-      let sizeFactor = 1;
-      if (clusterAmt>0) { const n=noise(gx,gy); local*=(1-clusterAmt)+clusterAmt*(n*n*3); }
+      let sizeFactor = 1, nClu = 0;
+      if (clusterAmt>0) { nClu=noise(gx,gy); local*=(1-clusterAmt)+clusterAmt*(nClu*nClu*3); }
       if (maskFn) { const m=maskFn(cx,cy); if(m<=0) continue; local*=m; }
       if (fieldFn) {
         const v=fieldFn(nx,ny,gx,gy);
         sizeFactor=1-amp+amp*v; local*=(1-amp)+amp*v*v*2;
       }
+      // Hiérarchie organique : les points des zones denses sont un peu plus gros
+      if (clusterAmt>0) sizeFactor*=1-clusterAmt*0.35*(1-nClu);
       if (r1>=local) continue;
       dots.push({ x:cx, y:cy, size:baseDot*sizeFactor*(1-sizeVar*rng()), color:pickColor(rng,colorT(nx,ny,null)), opacity:1-opacityVar*r2 });
     }
@@ -2371,7 +2373,6 @@ function applyModePreset(mode) {
   Object.entries(p.sliders).forEach(([id,v])=>setSlider(id,v));
   Object.entries(p.selects||{}).forEach(([id,v])=>setSelect(id,v));
 }
-const BG_CHOICES=["#f4f5f4","#ffffff","#f7f3ec","#eef1f6","#f2ecf5","#101418","#0d1117","#12160f"];
 
 function randomizeAll() {
   animerScene();
@@ -2379,16 +2380,27 @@ function randomizeAll() {
   const modesDispo=["grid","disc","wave","ripple","vortex","topo"];
   if(imageEchantillon) modesDispo.push("image");
   activerMode(pick(modesDispo));
-  document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","circle"])}"]`).click();
-  setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("sizeVar",R(10,55));
-  setSlider("density",R(25,70)); setSlider("clustering",R(10,70));
+  // Dimensions variées (Full HD favorisé, mais formats carrés/verticaux/bannières aussi)
+  const [fw,fh]=pick([[1920,1080],[1920,1080],[2560,1440],[1080,1080],[1080,1080],[1080,1920],[1600,840],[1584,396]]);
+  state.width=fw; state.height=fh;
+  document.getElementById("canvasW").value=fw;
+  document.getElementById("canvasH").value=fh;
+  // Formes douces légèrement favorisées
+  document.querySelector(`#shapeSeg button[data-shape="${pick(["square","rounded","rounded","circle"])}"]`).click();
+  setSlider("cellSize",R(10,24)); setSlider("dotScale",R(45,75)); setSlider("sizeVar",R(15,55));
+  setSlider("density",R(30,70)); setSlider("clustering",R(15,70));
   setSelect("fadeMode",pick(["none","edges","edges","center","top","bottom","left","right"])); setSlider("fadeStrength",R(30,70));
   setSlider("radiusPct",R(65,95)); setSlider("softEdge",R(15,55));
-  setSlider("waveFreq",R(3,10)); setSlider("waveAmp",R(65,100)); setSelect("waveDir",pick(["horizontal","vertical","diagonal","radial"]));
+  setSlider("waveFreq",R(3,10)); setSlider("waveAmp",R(70,100)); setSelect("waveDir",pick(["horizontal","vertical","diagonal","radial"]));
   state.colors=randomPalette(); clearPaletteActive(); renderSwatches();
-  setSelect("colorDist",pick(["random","random","horizontal","vertical","radial","depth"]));
-  setSlider("grayMix",R(0,45)); setSlider("opacityVar",R(25,65));
-  state.bgColor=pick(BG_CHOICES);
+  // Répartitions directionnelles favorisées : rendu plus « composé » que le pur aléatoire
+  setSelect("colorDist",pick(["random","horizontal","vertical","radial","radial","depth"]));
+  setSlider("grayMix",R(0,35)); setSlider("opacityVar",R(30,60));
+  // Fond accordé à la palette : teinte dérivée de la première couleur
+  const [teinteP]=hexToHsl(state.colors[0]);
+  const fondsClairs=[hslToHex(teinteP,18,96), hslToHex(teinteP,10,98), "#ffffff", hslToHex((teinteP+180)%360,12,96)];
+  const fondsSombres=[hslToHex(teinteP,22,9), hslToHex(teinteP,30,6)];
+  state.bgColor=Math.random()<.7?pick(fondsClairs):pick(fondsSombres);
   const pastilleFond=document.getElementById("bgColor");
   pastilleFond.style.background=state.bgColor;
   pastilleFond.setAttribute("aria-label",`Couleur du fond : ${state.bgColor} — modifier`);
