@@ -109,29 +109,6 @@
     background: var(--panel);
     z-index: 5;
   }
-  details.group summary .s-hint {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-weight: 500;
-    color: var(--text-dim);
-    text-transform: none;
-    letter-spacing: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    max-width: 55%;
-  }
-  details.group summary .s-hint i {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.18);
-    flex-shrink: 0;
-  }
-  details.group[open] > summary .s-hint { display: none; }
-  details.group summary .s-hint + .s-arrow { margin-left: 8px; }
-  details.group[open] > summary .s-hint + .s-arrow { margin-left: auto; }
   details.group summary .s-arrow {
     margin-left: auto;
     display: flex;
@@ -1200,7 +1177,6 @@
     <details class="group" open>
       <summary>
         Disposition
-        <span class="s-hint" id="hintDispo"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
       </summary>
       <div class="group-body">
@@ -1376,7 +1352,6 @@
     <details class="group" open>
       <summary>
         Points
-        <span class="s-hint" id="hintPoints"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
       </summary>
       <div class="group-body">
@@ -1415,7 +1390,6 @@
     <details class="group" data-modes="grid disc ring wave persp ripple vortex topo image">
       <summary>
         Densité
-        <span class="s-hint" id="hintDensite"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
       </summary>
       <div class="group-body">
@@ -1459,7 +1433,6 @@
     <details class="group" open>
       <summary>
         Couleurs
-        <span class="s-hint" id="hintCouleurs"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
       </summary>
       <div class="group-body">
@@ -1502,7 +1475,6 @@
     <details class="group">
       <summary>
         Fond
-        <span class="s-hint" id="hintFond"></span>
         <span class="s-arrow"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18 9.00005C18 9.00005 13.5811 15 12 15C10.4188 15 6 9 6 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></span>
       </summary>
       <div class="group-body">
@@ -1996,22 +1968,7 @@ function render() {
     document.getElementById("dimsLabel").textContent=`${state.width} × ${state.height}`;
     const seedInput=document.getElementById("seedInput");
     if(document.activeElement!==seedInput) seedInput.value=String(state.seed).padStart(6,"0");
-    majResumes();
   }, 0);
-}
-
-/* ── Résumés des sections repliées ── */
-const NOMS_MODES={grid:"Grille",disc:"Disque",ring:"Anneau",spiral:"Spirale",sphere:"Sphère",persp:"Perspective",wave:"Ondes",ripple:"Gouttes",vortex:"Vortex",topo:"Topographie",image:"Image"};
-const NOMS_FONDU={none:"sans fondu",edges:"fondu bords",center:"fondu centre",top:"fondu haut",bottom:"fondu bas",left:"fondu gauche",right:"fondu droite"};
-const NOMS_FORMES={square:"Carré",rounded:"Arrondi",circle:"Cercle"};
-function majResumes() {
-  const s=state;
-  document.getElementById("hintDispo").textContent=NOMS_MODES[s.mode]||"";
-  const taille=(s.mode==="spiral"||s.mode==="sphere")?s.dotSizePx:s.cellSize;
-  document.getElementById("hintPoints").textContent=`${NOMS_FORMES[s.shape]} · ${taille} px`;
-  document.getElementById("hintDensite").textContent=`${s.density} · ${NOMS_FONDU[s.fadeMode]}`;
-  document.getElementById("hintCouleurs").innerHTML=s.colors.slice(0,5).map(c=>`<i style="background:${c}"></i>`).join("");
-  document.getElementById("hintFond").innerHTML=s.bgTransparent?"transparent":`<i style="background:${s.bgColor}"></i>`;
 }
 
 /* Graine éditable : coller un numéro reproduit exactement le visuel */
