@@ -560,35 +560,29 @@
     margin-top: 1px;
   }
 
-  /* ── Couleurs actives ── */
+  /* ── Couleurs actives : bande collée pleine largeur ── */
   .swatches {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 8px 0 6px;
+    width: 100%;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 8px 0 0;
   }
   .swatch {
     position: relative;
-    width: 34px; height: 34px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    flex: 1 1 0;
+    min-width: 0;
     cursor: grab;
-    overflow: hidden;
-    transition: transform .12s, border-color .12s, opacity .12s;
+    transition: flex-grow .28s var(--ease-out), opacity .12s;
   }
-  .swatch::after {
-    /* liseré interne : les couleurs claires restent lisibles sur le panneau */
-    content: "";
-    position: absolute; inset: 0;
-    border-radius: 7px;
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
-    pointer-events: none;
-  }
-  .swatch:hover { transform: translateY(-2px); border-color: var(--border-hover); }
+  .swatch:hover { flex-grow: 1.6; }
   .swatch.dragging { opacity: .35; cursor: grabbing; }
-  .swatch.drag-over { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+  .swatch.drag-over { box-shadow: inset 0 0 0 2px var(--accent); z-index: 1; }
   .swatch-color {
     position: absolute; inset: 0;
+    width: 100%;
     border: none;
     padding: 0;
     cursor: pointer;
@@ -611,17 +605,18 @@
   }
   .swatch:hover .del, .swatch .del:focus-visible { opacity: 1; }
   .swatch-add {
-    width: 34px; height: 34px;
+    width: 100%;
+    height: 30px;
+    margin-top: 8px;
     border-radius: 8px;
     border: 1.5px dashed var(--border);
     background: none;
     color: var(--text-dim);
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all .1s;
-    flex-shrink: 0;
   }
   .swatch-add:hover:not(:disabled) { border-color: var(--accent-dim); color: var(--accent); }
   .swatch-add:disabled { opacity: .35; cursor: not-allowed; }
@@ -1384,9 +1379,8 @@
         <div class="sub-label">Palettes</div>
         <div class="presets" id="palettePills" role="group" aria-label="Palettes prédéfinies"></div>
         <div class="sub-label" style="margin-top:6px">Couleurs actives</div>
-        <div class="swatches" id="swatches">
-          <button class="swatch-add" id="addColor" title="Ajouter une couleur" aria-label="Ajouter une couleur"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4V20M20 12H4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></button>
-        </div>
+        <div class="swatches" id="swatches"></div>
+        <button class="swatch-add" id="addColor" title="Ajouter une couleur" aria-label="Ajouter une couleur"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 4V20M20 12H4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"/></svg></button>
         <div class="row-wide">
           <label id="colorDistLabel">Répartition</label>
           <div class="dd" id="colorDist">
@@ -2192,7 +2186,7 @@ function renderSwatches() {
       state.colors.splice(i,0,depl);
       clearPaletteActive(); renderSwatches(); render();
     });
-    wrap.insertBefore(sw,add);
+    wrap.appendChild(sw);
   });
   const plein=state.colors.length>=MAX_COULEURS;
   add.disabled=plein;
